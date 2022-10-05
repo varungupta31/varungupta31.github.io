@@ -1,11 +1,11 @@
 ---
 layout: page
-title: project 3
-description: a project that redirects to another website
-img: assets/img/7.jpg
-redirect: https://unsplash.com
-importance: 3
+title: SongSuggest
+description: Spotify's Top Charts' EDA and Song Recommendation System
+img: assets/img/song.jpg
+importance: 2
 category: work
+redirect: https://github.com/varungupta31/Spotify-Song-Recommendation_System
 ---
 
 Every project has a beautiful feature showcase page.

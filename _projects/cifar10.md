@@ -1,10 +1,11 @@
 ---
 layout: page
-title: project 6
-description: a project with no image
-img:
-importance: 4
+title: CIFAR-10
+description: Classification Using Keras on the CIFAR-10 Dataset
+img: assets/img/cifar.png
+importance: 3
 category: fun
+redirect: https://github.com/varungupta31/CIFAR-10-Keras
 ---
 
 Every project has a beautiful feature showcase page.

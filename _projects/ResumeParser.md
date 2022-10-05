@@ -1,10 +1,11 @@
 ---
 layout: page
-title: project 4
-description: another without an image
-img:
-importance: 3
-category: fun
+title: ResumeParse
+description: Resume Parser Using Tesseract OCR
+img: assets/img/resume.jpg
+redirect: https://github.com/varungupta31/ResumeParsing
+importance: 6
+category: work
 ---
 
 Every project has a beautiful feature showcase page.

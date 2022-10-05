@@ -1,10 +1,11 @@
 ---
 layout: page
-title: project 1
-description: a project with a background image
-img: assets/img/12.jpg
-importance: 1
+title: Leave-Count
+description: Find Number of Working Days in a Given Period
+img: assets/img/calendar.jpg
+importance: 4
 category: work
+redirect: https://github.com/varungupta31/Holiday-Counter-App
 ---
 
 Every project has a beautiful feature showcase page.

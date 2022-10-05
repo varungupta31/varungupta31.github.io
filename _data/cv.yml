@@ -1,97 +1,65 @@
-- title: General Information
-  type: map
-  contents:
-    - name: Full Name
-      value: Albert Einstein
-    - name: Date of Birth
-      value: 14th March 1879
-    - name: Languages
-      value: English, German
-
 - title: Education
   type: time_table
+  img: assets/img/ninja.png
   contents:
-    - title: PhD
-      institution: University of Zurich, Zurich, Switzerland
-      year: 1905
+    - title: B.Tech. in Information Technology
+      institution: Manipal University Jaipur
+      year: 2017-21
       description:
-        - Description 1.
-        - Description 2.
-        - title: Description 3.
-          contents:
-            - Sub-description 1.
-            - Sub-description 2.
-    - title: Federal teaching diploma
-      institution: Eidgenössische Technische Hochschule, Zurich, Switzerland
-      year: 1900
-      description:
-        - Description 1.
-        - Description 2.
+        - CGPA 9.28/10.0
+      img: ../assets/img/muj.png
 
 - title: Experience
   type: time_table
   contents:
-    - title: Professor of Theoretical Physics
-      institution: Institute for Advanced Study, Princeton University
-      year: 1933 - 1955
+    - title: Research Fellow
+      institution: Centre for Visual Information Technology, IIIT Hyderabad
+      year: Jan '22 - Present
+      img: ../assets/img/iiit.png
       description:
-        - Description 1.
-        - Description 2.
-        - title: Description 3.
-          contents:
-            - Sub-description 1.
-            - Sub-description 2.
-    - title: Visiting Professor
-      institution: California Institute of Technology, Pasadena, California, US
-      year: 1933
+        - Working on Identifying Missing Traffic Signs in Uncontrained roads.
+        - Overseeing the annotations tasks for MTSVD (Missing Traffic Signs Video Dataset), the largest publicly accessible dataset for missing objects, and managing the annotation team.
+        - Automated annotations by incorporating SORT-Tracker, fine tuned the tracks by writing a coordinate extrapolation script for missed frames, and prepared automated annotations in several formats like JSON, MS-COCO and CVAT-for-Video, for increasing annotation efficiency.
+        - Exploring Attention modules, Context Reasoning, Classification and Semantic Segmentation for detecting missing traffic signs, along with GradCam visuals for better interpretations.
+      
+    
+    - title: Research Intern
+      institution: National Institute of Technology, Goa
+      img: ../assets/img/nitgoa.png
+      year: Jun '20 - Dec '21
       description:
-        - Description 1.
-        - Description 2.
+        - Worked on contactless monitoring of the respiratory rate in humans using Infrared thermography.
+        - Implemented digital filters for signal processing in MATLAB and performed comparitive analysis of different FIR and IIR filters.
+        - Implemented scripts to automate classification of breathing signals into categories like bradypnea and tachypnoea, using Random-Forest Classifier, and visualized breathing data using the t-SNE algorithm.
+        - Developed a custom trained, real-time nostril detection algorithm using YOLO and YOLO-tiny for continuous and robust acquisition of the breathing signals.
 
-    - title: Director
-      institution: Kaiser Wilhelm Institute for Physics, Berlin, Germany.
-      year: 1917-1933
-
-    - title: Professor of Theoretical Physics
-      institution: Karl-Ferdinand University, Prague, Czechoslovakia
-      year: 1911 - 1917
+    - title: Data Science Intern
+      institution: Marktine Solutions, MNIT Jaipur Innovation and Incubation Cell (MIIC)
+      img: ../assets/img/miic.png
+      year: Feb '20 - Jun '20
       description:
-
-    - title: Associate Professor of Theoretical Physics
-      institution: University of Zurich, Zurich, Switzerland
-      year: 1909 - 1911
-
-- title: Open Source Projects
-  type: time_table
-  contents:
-    - title: <a href="https://github.com/alshedivat/al-folio">al-folio</a>
-      year: 2015-now
-      description: A beautiful, simple, clean, and responsive Jekyll theme for academics.
+        - Assigned on the project ’vriti.ai’, aimed at automating resume parsing and summarization using CNN’s and NLP, for efficient recruitment in industries.
+        - Developed a resume parser using regex, and Google Tesseract OCR. Custom trained a named entity recognition model using Spacy, and trained CNN models in Keras.
+        - Implemented interactive data visualizations and developed a custom holiday-counter application using the Calendarific API.
 
 - title: Honors and Awards
   type: time_table
   contents:
-    - year: 1921
+    - year: 2020-21
       items: 
-        - Nobel Prize in Physics 
-        - Matteucci Medal
-    - year: 2029
+        - Awarded <b>Best Student Project</b> by the Dept. of Information Technology, Manipal University Jaipur, for the final year project work.
+      
+    - year: 2017-21
       items: 
-        - Max Planck Medal
+        - Consecutive recipient of the <b>Rajasthan Merit Scholarship</b>, awarded by the Dept. of Information Technology, Manipal University Jaipur.
 
-- title: Academic Interests
-  type: nested_list
-  contents:
-    - title: Topic 1.
+    - year: 2021
       items: 
-        - Description 1.
-        - Description 2.
-    - title: Topic 2.
-      items:
-        - Description 1.
-        - Description 2.
+        - title: Presented Papers at
+          contents:
+            - International Symposium of Asian Control Association on Intelligent Robotics and Industrial Automation (IRIA), IIT Goa.
+            - International Conference on Technology, Research, and Innovation for Betterment of Society (TRIBES), IIIT-NR.
 
-- title: Other Interests
-  type: list
-  contents:
-    - <u>Hobbies:</u> Hobby 1, Hobby 2, etc.
+    - year: 2015
+      items: 
+        - Received <b>Letter of Appreciation</b> by Hon. Smt. Smriti Zubin Irani, HRD Minister, Govt. of India, for exceptional performance in Class-X examination.

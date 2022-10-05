@@ -262,7 +262,7 @@ blockquote {
     }
   }
   .contact-note {
-    font-size: 0.8rem;
+    font-size: 0.9rem;
   }
 }
 
@@ -273,8 +273,8 @@ footer.fixed-bottom {
   font-size: 0.75rem;
   .container {
     color: var(--global-footer-text-color);
-    padding-top: 9px;
-    padding-bottom: 8px;
+    padding-top: 2px;
+    padding-bottom: 2px;
   }
   a {
     color: var(--global-footer-link-color);
@@ -650,4 +650,21 @@ html.transition *:after {
       padding: 8px;
     }
   }
+}
+
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+  padding-bottom: 20px;
+}
+
+.fixbottomimg {
+  position: fixed;
+  bottom: 21px;
+  left: 5%;  
+  width: 25%;
+  
+  
 }

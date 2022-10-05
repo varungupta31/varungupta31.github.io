@@ -10,6 +10,7 @@
         {%- endif %}
       </div>
     </footer>
+    
     {%- else -%}
     <footer class="sticky-bottom mt-5">
       <div class="container">
@@ -20,6 +21,8 @@
         {%- if site.last_updated -%}
         Last updated: {{ "now" | date: '%B %d, %Y' }}.
         {%- endif %}
+        
       </div>
+      
     </footer>
     {%- endif %}

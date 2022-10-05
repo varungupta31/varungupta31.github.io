@@ -1,10 +1,11 @@
 ---
 layout: page
-title: project 2
-description: a project with a background image
-img: assets/img/3.jpg
-importance: 2
+title: FakeNotes
+description: Banknote Authentication Using Random Forest Classification
+img: assets/img/note.jpg
+importance: 3
 category: work
+redirect: https://github.com/varungupta31/Bank_Note_Authentication_Random_Forest_classifier
 ---
 
 Every project has a beautiful feature showcase page.

@@ -1,10 +1,11 @@
 ---
 layout: page
-title: project 5
-description: a project with a background image
-img: assets/img/1.jpg
-importance: 3
-category: fun
+title: AutoVision
+description: Vehicle Alert System using AI
+img: assets/img/autovisioncover.png
+importance: 1
+category: work
+redirect: https://github.com/varungupta31/AutoVision
 ---
 
 Every project has a beautiful feature showcase page.
