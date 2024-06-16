@@ -2,11 +2,18 @@
   type: time_table
   img: assets/img/ninja.png
   contents:
+    - title: MS in Computer Science and Engineering
+      institution: IIIT Hyderabad
+      year: 2023-present
+      description:
+        - CGPA 9.9/10.0
+      img: ../assets/img/iiitlogo.png
+
     - title: B.Tech. in Information Technology
       institution: Manipal University Jaipur
       year: 2017-21
       description:
-        - CGPA 9.28/10.0
+        - CGPA 9.3/10.0
       img: ../assets/img/muj.png
 
 - title: Experience
@@ -14,7 +21,7 @@
   contents:
     - title: Research Fellow
       institution: Centre for Visual Information Technology, IIIT Hyderabad
-      year: Jan '22 - Present
+      year: Jan '22 - Jun '23
       img: ../assets/img/iiit.png
       description:
         - Working on Identifying Missing Traffic Signs in Uncontrained roads.
@@ -45,6 +52,9 @@
 - title: Honors and Awards
   type: time_table
   contents:
+    - year: 2023-2025
+      items: 
+        - Awarded a funded MS in CSE by IIIT Hyderabad.
     - year: 2020-21
       items: 
         - Awarded <b>Best Student Project</b> by the Dept. of Information Technology, Manipal University Jaipur, for the final year project work.
