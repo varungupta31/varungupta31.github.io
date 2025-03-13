@@ -10,11 +10,15 @@ profile:
   image_circular: false # crops the image to make it circular
   address:
 
-news: false  # includes a list of news items
+news: true  # includes a list of news items
 selected_papers: true # includes a list of papers marked as "selected={true}"
 social: true  # includes social icons at the bottom of the page
 ---
 
-I'm a Masters (CSE) student at the [Center for Visual Infromation Technology (CVIT)](https://cvit.iiit.ac.in/) at [IIIT Hyderabad](https://www.iiit.ac.in/), working on video-understanding and representation learning. I'm advised by [Dr. Makarand Tapaswi](https://makarandtapaswi.github.io/) and [Prof. C.V. Jawahar](https://faculty.iiit.ac.in/~jawahar/). Previously, I interned as a research-fellow within the Mobility Group at  CVIT, with Prof. C.V. Jawahar, [Dr. Anbumani Subramanian](https://in.linkedin.com/in/anbumanisubramanian) and [Dr. Rohit Saluja](https://scee.iitmandi.ac.in/faculty_personal.php?id=22), where I worked on enhancing the road infrastructure for Autonomous Driving on unconstrained roads. During my undergrad, I interned at the [National Institute of Technology, Goa](https://www.nitgoa.ac.in/), where I worked with [Dr. Lalat Indu Giri](https://www.nitgoa.ac.in/People/frontend/lalat.html) on Contactless Monitoring of Respiratory Rate in Humans using Infrared Thermography.
+I’m a Master’s student in Computer Science at [IIIT Hyderabad](https://www.iiit.ac.in/), where I work on visual understanding and representation learning — essentially, teaching computers how to watch and make sense of the world!
 
-Besides my academic interests, I enjoy cooking, biking, playing bass, capturing stills and picking up some weights!
+I’m fortunate to be advised by [Dr. Makarand Tapaswi](https://makarandtapaswi.github.io/) and [Prof. C.V. Jawahar](https://faculty.iiit.ac.in/~jawahar/), while collaborating closely with [Dr. Vineet Gandhi](https://www.iiit.ac.in/faculty/vineet-gandhi/).
+
+<b>Previously</b>, I was a Research Fellow with the Mobility Group at CVIT, collaborating with [Dr. Anbumani Subramanian](https://www.linkedin.com/in/anbumanisubramanian/?originalSubdomain=inn) (Intel) on an autonomous driving project, tackling road infrastructure challenges in unconstrained environments. During my <b>undergrad</b>, I interned at [NIT Goa](https://www.nitgoa.ac.in/), where I worked with [Dr. Lalat Indu Giri](https://www.nitgoa.ac.in/People/frontend/lalat.html) on contactless respiratory rate monitoring using infrared thermography.
+
+Beyond research, you’ll find me cooking, biking around, vibing to music, capturing moments, or lifting some heavy weights!
