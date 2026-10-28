@@ -1,0 +1,185 @@
+---
+import { type CollectionEntry, getCollection } from "astro:content";
+import { Icon } from "astro-icon/components";
+import PostPreview from "@/components/blog/PostPreview.astro";
+import Note from "@/components/note/Note.astro";
+import { getAllPosts } from "@/data/post";
+import PageLayout from "@/layouts/Base.astro";
+import { collectionDateSort } from "@/utils/date";
+
+// Posts
+const MAX_POSTS = 10;
+const allPosts = await getAllPosts();
+const allPostsByDate = allPosts.sort(collectionDateSort) as CollectionEntry<"post">[];
+const latestPosts = allPostsByDate.slice(0, MAX_POSTS);
+
+// Pinned Posts, set to a max of 3;
+const MAX_PINNED_POSTS = 3;
+const pinnedPosts = allPostsByDate
+	.values()
+	.filter((p) => p.data.pinned)
+	.take(MAX_PINNED_POSTS)
+	.toArray();
+
+// Notes, set to a max of 5
+const MAX_NOTES = 5;
+const allNotes = await getCollection("note");
+const latestNotes = allNotes
+	.sort(collectionDateSort)
+	.slice(0, MAX_NOTES) as CollectionEntry<"note">[];
+
+const contactLinks: {
+	friendlyName: string;
+	link: string;
+	name: string;
+	title: string;
+}[] = [
+	{
+		friendlyName: "LinkedIn",
+		link: "https://www.linkedin.com/in/varungupta31/",
+		name: "mdi:linkedin",
+		title: "linkedin.com/in/varungupta31",
+	},
+	{
+		friendlyName: "GitHub",
+		link: "https://github.com/varungupta31",
+		name: "mdi:github",
+		title: "github.com/varungupta31",
+	},
+	{
+		friendlyName: "Google Scholar",
+		link: "https://scholar.google.com/citations?user=6Bc_428AAAAJ&hl=en",
+		name: "simple-icons:googlescholar",
+		title: "Publications & citations",
+	},
+	{
+		friendlyName: "Email",
+		link: "mailto:gupta.varun@research.iiit.ac.in",
+		name: "mdi:email",
+		title: "gupta.varun@research.iiit.ac.in",
+	},
+];
+---
+
+<PageLayout meta={{ title: "Home" }}>
+	<section class="grid items-center gap-10 sm:grid-cols-[1fr_auto]">
+		<div data-motion>
+			<h1 class="title mb-6 text-5xl sm:text-7xl">Varun Gupta</h1>
+			<p class="max-w-prose text-lg">
+				Master’s student in Computer Science at
+				<a class="cactus-link inline-block" href="https://www.iiit.ac.in/" rel="noreferrer" target="_blank"
+					>IIIT Hyderabad</a
+				>, working on visual understanding and representation learning — teaching
+				computers how to watch and make sense of the world!
+			</p>
+		</div>
+		<img
+			data-motion="photo"
+			src="/avatar.jpg"
+			alt="Varun Gupta"
+			class="w-56 justify-self-center sm:w-80 lg:w-96"
+			width="512"
+			height="512"
+		/>
+	</section>
+	<section class="mt-20">
+		<h2 class="title text-accent mb-8 text-xl" data-motion>Find me on</h2>
+		<ul class="grid gap-y-2 sm:grid-cols-2 sm:gap-x-12" role="list">
+			{
+				contactLinks.map(({ friendlyName, link, name, title }) => {
+					const isMail = link.startsWith("mailto:");
+					return (
+						<li data-motion class:list={isMail && "sm:col-span-2"}>
+							<a
+								class={
+									isMail
+										? "group flex items-center gap-4 rounded-md bg-accent px-4 py-3 text-white hover:translate-x-1 hover:opacity-90"
+										: "group flex items-center gap-4 py-3 hover:text-accent"
+								}
+								href={link}
+								rel="noreferrer"
+								target={isMail ? undefined : "_blank"}
+							>
+								<Icon
+									aria-hidden="true"
+									class="h-7 w-7 shrink-0 scale-100 opacity-100 transition-transform group-hover:scale-110"
+									name={name}
+								/>
+								<span>
+									<span class="block font-semibold">{friendlyName}</span>
+									<span class={`block text-sm break-all ${isMail ? "text-white/80" : "text-muted"}`}>{title}</span>
+								</span>
+								<svg
+									aria-hidden="true"
+									class="ms-auto hidden transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 sm:block"
+									fill="none"
+									height="20"
+									stroke="currentColor"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="1.5"
+									viewBox="0 0 24 24"
+									width="20"
+								>
+									<path d="M7 17 17 7M7 7h10v10" />
+								</svg>
+							</a>
+						</li>
+					);
+				})
+			}
+		</ul>
+		<figure class="text-muted mt-14 text-sm italic" data-motion>
+			<blockquote class="text-accent-2 text-xl not-italic sm:text-2xl">
+				“A smooth sea never made a skilled sailor.”
+			</blockquote>
+			<figcaption class="mt-2">— Franklin D. Roosevelt</figcaption>
+		</figure>
+	</section>
+	{
+		pinnedPosts.length > 0 && (
+			<section class="mt-16">
+				<h2 class="title mb-6 text-xl">Pinned Posts</h2>
+				<ul class="space-y-4" role="list">
+					{pinnedPosts.map((p) => (
+						<li class="grid gap-1 sm:grid-cols-[auto_1fr]">
+							<PostPreview post={p} />
+						</li>
+					))}
+				</ul>
+			</section>
+		)
+	}
+	{
+		latestPosts.length > 0 && (
+			<section class="mt-16">
+				<h2 class="title text-accent mb-6 text-xl"><a href="/posts/">Posts</a></h2>
+				<ul class="space-y-4" role="list">
+					{
+						latestPosts.map((p) => (
+							<li class="grid gap-1 sm:grid-cols-[auto_1fr]">
+								<PostPreview post={p} />
+							</li>
+						))
+					}
+				</ul>
+			</section>
+		)
+	}
+	{
+		latestNotes.length > 0 && (
+			<section class="mt-16">
+				<h2 class="title text-accent mb-6 text-xl" data-motion>
+					<a href="/notes/">News</a>
+				</h2>
+				<ul class="space-y-6" role="list">
+					{latestNotes.map((note) => (
+						<li data-motion>
+							<Note note={note} as="h3" isPreview />
+						</li>
+					))}
+				</ul>
+			</section>
+		)
+	}
+</PageLayout>

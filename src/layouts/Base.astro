@@ -1,0 +1,76 @@
+---
+import BaseHead from "@/components/BaseHead.astro";
+import Cat from "@/components/Cat.astro";
+import Footer from "@/components/layout/Footer.astro";
+import Header from "@/components/layout/Header.astro";
+import SkipLink from "@/components/SkipLink.astro";
+import ThemeProvider from "@/components/ThemeProvider.astro";
+import { siteConfig } from "@/site.config";
+import type { SiteMeta } from "@/types";
+
+interface Props {
+	meta: SiteMeta;
+}
+
+const {
+	meta: { articleDate, description = siteConfig.description, ogImage, title },
+} = Astro.props;
+---
+
+<html class="scroll-smooth" lang={siteConfig.lang}>
+	<head>
+		<BaseHead articleDate={articleDate} description={description} ogImage={ogImage} title={title} />
+		<ThemeProvider />
+	</head>
+	<body
+		class="bg-global-bg text-global-text mx-auto flex min-h-screen max-w-5xl flex-col px-4 pt-12 font-mono text-base font-normal antialiased sm:px-8"
+	>
+		<SkipLink />
+		<Header />
+		<main id="main">
+			<slot />
+		</main>
+		<Footer />
+		<Cat />
+		<script>
+			// Entrance motion. Adds .js first so content never hides without JS.
+			document.documentElement.classList.add("js");
+			const items = [...document.querySelectorAll("[data-motion]")];
+			items.forEach((el, i) => {
+				el.style.transitionDelay = `${(i % 6) * 70}ms`;
+			});
+			const io = new IntersectionObserver(
+				(entries) => {
+					for (const entry of entries) {
+						if (entry.isIntersecting) {
+							entry.target.classList.add("motion-in");
+							io.unobserve(entry.target);
+						}
+					}
+				},
+				{ threshold: 0.15 },
+			);
+			items.forEach((el) => io.observe(el));
+		</script>
+		<script is:inline type="speculationrules">
+			{
+				"prefetch": [
+					{
+						"where": {
+							"href_matches": "/*"
+						},
+						"eagerness": "immediate"
+					}
+				],
+				"prerender": [
+					{
+						"where": {
+							"href_matches": "/*"
+						},
+						"eagerness": "moderate"
+					}
+				]
+			}
+		</script>
+	</body>
+</html>

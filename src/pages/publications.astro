@@ -1,0 +1,162 @@
+---
+import PageLayout from "@/layouts/Base.astro";
+
+type Author = { name: string; highlight?: boolean };
+type Link = { label: string; url: string };
+type Paper = {
+	authors: Author[];
+	links: Link[];
+	preview: { alt: string; src: string };
+	title: string;
+	venue: string;
+	year: number;
+};
+
+const meta = {
+	description: "Publications by Varun Gupta in computer vision.",
+	title: "Publications",
+};
+
+const papers: Paper[] = [
+	{
+		authors: [
+			{ name: "Darshana S*", highlight: false },
+			{ name: "Varun Gupta*", highlight: true },
+			{ name: "Darshan Singh*", highlight: false },
+			{ name: "Zeeshan Khan", highlight: false },
+			{ name: "Vineet Gandhi", highlight: false },
+			{ name: "Makarand Tapaswi", highlight: false },
+		],
+		venue: "CVPR",
+		year: 2025,
+		preview: {
+			alt: "VELOCITI benchmark preview",
+			src: "/img/publication_preview/velociti.png",
+		},
+		links: [
+			{ label: "arXiv", url: "https://arxiv.org/abs/2406.10889" },
+			{ label: "Code", url: "https://github.com/katha-ai/VELOCITI" },
+		],
+		title: "VELOCITI: Benchmarking Video-Language Compositional Reasoning with Strict Entailment",
+	},
+	{
+		authors: [
+			{ name: "Varun Gupta", highlight: true },
+			{ name: "Anbumani Subramanian", highlight: false },
+			{ name: "C.V. Jawahar", highlight: false },
+			{ name: "Rohit Saluja", highlight: false },
+		],
+		venue: "Lecture Notes in Electrical Engineering, Springer Nature",
+		year: 2024,
+		preview: {
+			alt: "C4MTS challenge preview",
+			src: "/img/publication_preview/c4mts.png",
+		},
+		links: [],
+		title: "C4MTS: Challenge on Categorizing Missing Traffic Signs from Contextual Cues",
+	},
+	{
+		authors: [
+			{ name: "Varun Gupta", highlight: true },
+			{ name: "Anbumani Subramanian", highlight: false },
+			{ name: "C.V. Jawahar", highlight: false },
+			{ name: "Rohit Saluja", highlight: false },
+		],
+		venue: "IEEE International Conference on Robotics and Automation (ICRA)",
+		year: 2023,
+		preview: {
+			alt: "CueCAn preview",
+			src: "/img/publication_preview/cuecan.gif",
+		},
+		links: [
+			{ label: "arXiv", url: "https://arxiv.org/abs/2303.02641" },
+			{ label: "Code", url: "https://github.com/iHubData-Mobility/public-CueCAn" },
+		],
+		title: "CueCAn: Cue Driven Contextual Attention Units for Identifying Missing Traffic Signs on Unconstrained Roads",
+	},
+	{
+		authors: [
+			{ name: "Varun Gupta", highlight: true },
+			{ name: "Preeti Jagadev", highlight: false },
+			{ name: "Lalat Indu Giri", highlight: false },
+		],
+		venue:
+			"International Symposium of Asian Control Association on Intelligent Robotics and Industrial Automation (IRIA)",
+		year: 2021,
+		preview: {
+			alt: "Thermal respiration monitoring preview",
+			src: "/img/publication_preview/thermalRes.gif",
+		},
+		links: [{ label: "PDF", url: "https://ieeexplore.ieee.org/document/9588754/" }],
+		title: "Infrared Thermography and Computer Vision Based Human Respiration Monitoring",
+	},
+	{
+		authors: [
+			{ name: "Varun Gupta", highlight: true },
+			{ name: "Preeti Jagadev", highlight: false },
+			{ name: "Lalat Indu Giri", highlight: false },
+		],
+		venue: "International Conference on Technology, Research, and Innovation for Betterment of Society (TRIBES)",
+		year: 2021,
+		preview: {
+			alt: "Thermal nostril tracking preview",
+			src: "/img/publication_preview/respiration.gif",
+		},
+		links: [{ label: "PDF", url: "https://ieeexplore.ieee.org/document/9751624" }],
+		title: "Thermal Nostril Tracking Using YOLOv4-Tiny",
+	},
+];
+
+const years: number[] = [...new Set(papers.map((p) => p.year))].sort((a, b) => b - a);
+---
+
+<PageLayout meta={meta}>
+	<h1 class="title mb-12 text-4xl sm:text-5xl">Publications</h1>
+	<div class="prose prose-cactus max-w-none">
+		<p>* denotes equal contribution.</p>
+		{
+			years.map((year) => (
+				<>
+					<h2>{year}</h2>
+					<ul class="space-y-6" role="list">
+						{papers.filter((paper) => paper.year === year).map((paper) => (
+							<li class="grid gap-3 sm:grid-cols-[9rem_1fr]">
+								<figure class="m-0 flex items-start justify-center">
+									<img src={paper.preview.src} alt={paper.preview.alt} class="w-full" />
+								</figure>
+								<div>
+									<a class="font-semibold" href={paper.links[0]?.url ?? "/publications/"} rel="noreferrer" target="_blank">
+										{paper.title}
+									</a>
+									<p class="text-muted my-1 text-sm">
+										{paper.authors.map((author, i) => (
+											<>
+												{i > 0 && <>, </>}
+												{author.highlight ? <strong>{author.name}</strong> : author.name}
+											</>
+										))}
+									</p>
+									<p class="text-sm italic">
+										{paper.venue} {paper.year}
+									</p>
+									{paper.links.length > 0 && (
+										<p class="mt-1 text-sm">
+											{paper.links.map((link, i) => (
+												<>
+													{i > 0 && <>&nbsp;&nbsp;| </>}
+													<a class="cactus-link inline-block" href={link.url} rel="noreferrer" target="_blank">
+														{link.label}
+													</a>
+												</>
+											))}
+										</p>
+									)}
+								</div>
+							</li>
+						))}
+					</ul>
+				</>
+			))
+		}
+	</div>
+</PageLayout>

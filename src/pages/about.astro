@@ -1,0 +1,66 @@
+---
+import PageLayout from "@/layouts/Base.astro";
+
+const meta = {
+	description:
+		"About Varun Gupta — Master's student in Computer Science at IIIT Hyderabad working on visual understanding and representation learning.",
+	title: "About",
+};
+---
+
+<PageLayout meta={meta}>
+	<h1 class="title mb-12 text-4xl sm:text-5xl">About</h1>
+	<div class="prose prose-cactus max-w-none">
+		<img
+			src="/img/prof_pic.jpg"
+			alt="Profile picture of Varun Gupta"
+			class="float-right ms-4 mb-4 w-48 sm:w-72"
+		/>
+		<p>
+			I’m a Master’s student in Computer Science at
+			<a class="cactus-link inline-block" href="https://www.iiit.ac.in/" rel="noreferrer" target="_blank"
+				>IIIT Hyderabad</a
+			>, where I work on visual understanding and representation learning — essentially, teaching
+			computers how to watch and make sense of the world!
+		</p>
+		<p>
+			I’m fortunate to be advised by
+			<a class="cactus-link inline-block" href="https://makarandtapaswi.github.io/" rel="noreferrer" target="_blank"
+				>Dr. Makarand Tapaswi</a
+			> and
+			<a class="cactus-link inline-block" href="https://faculty.iiit.ac.in/~jawahar/" rel="noreferrer" target="_blank"
+				>Prof. C.V. Jawahar</a
+			>, while collaborating closely with
+			<a class="cactus-link inline-block" href="https://www.iiit.ac.in/faculty/vineet-gandhi/" rel="noreferrer" target="_blank"
+				>Dr. Vineet Gandhi</a
+			>.
+		</p>
+		<p>
+			<strong>Previously</strong>, I was a Research Fellow with the Mobility Group at CVIT,
+			collaborating with
+			<a
+				class="cactus-link inline-block"
+				href="https://www.linkedin.com/in/anbumanisubramanian/"
+				rel="noreferrer"
+				target="_blank">Dr. Anbumani Subramanian</a
+			> (Intel) on an autonomous driving project, tackling road infrastructure challenges in
+			unconstrained environments. During my <strong>undergrad</strong>, I interned at
+			<a class="cactus-link inline-block" href="https://www.nitgoa.ac.in/" rel="noreferrer" target="_blank">NIT Goa</a
+			>, where I worked with
+			<a
+				class="cactus-link inline-block"
+				href="https://www.nitgoa.ac.in/People/frontend/lalat.html"
+				rel="noreferrer"
+				target="_blank">Dr. Lalat Indu Giri</a
+			> on contactless respiratory rate monitoring using infrared thermography.
+		</p>
+		<p>
+			Beyond research, you’ll find me cooking, biking around, vibing to music, capturing moments, or
+			lifting some heavy weights!
+		</p>
+	</div>
+	<figure class="text-muted mt-16 text-sm italic">
+		<blockquote>“A smooth sea never made a skilled sailor.”</blockquote>
+		<figcaption class="mt-1">— Franklin D. Roosevelt</figcaption>
+	</figure>
+</PageLayout>

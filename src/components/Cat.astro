@@ -1,0 +1,465 @@
+---
+// The website's cat. Fixed at the bottom of every page: walks around, sits,
+// sleeps, playfully chases a little ball, hops at the cursor.
+// Purely decorative: pointer-events pass through everywhere except the cat itself.
+---
+
+<aside id="mascot-cat" data-pose="walk" data-state="walk" aria-hidden="true">
+	<div class="cat-mover" id="cat-mover">
+		<div class="cat-inner" id="cat-inner">
+			<!-- walking pose (side profile, faces right) -->
+			<svg class="pose pose-walk" id="pose-walk" viewBox="0 0 140 92" xmlns="http://www.w3.org/2000/svg">
+				<!-- tail -->
+				<g class="cat-tail">
+					<path
+						fill="none"
+						stroke="currentColor"
+						stroke-linecap="round"
+						stroke-width="6.5"
+						d="M34 54 C 16 48, 6 34, 14 20 C 18 13, 27 13, 26 21"
+					></path>
+				</g>
+				<!-- body -->
+				<rect fill="currentColor" height="26" rx="13" width="64" x="30" y="42"></rect>
+				<!-- legs -->
+				<g class="legs">
+					<rect class="leg leg-back-1" fill="currentColor" height="20" rx="4.5" width="9" x="34" y="62"></rect>
+					<rect class="leg leg-back-2" fill="currentColor" height="20" rx="4.5" width="9" x="50" y="62"></rect>
+					<rect class="leg leg-front-1" fill="currentColor" height="20" rx="4.5" width="9" x="68" y="62"></rect>
+					<rect class="leg leg-front-2" fill="currentColor" height="20" rx="4.5" width="9" x="84" y="62"></rect>
+				</g>
+				<!-- ears -->
+				<path d="M126 8 L 117.5 22 L 127 24 Z" fill="currentColor"></path>
+				<path d="M105 7 L 103 22 L 112 21 Z" fill="currentColor"></path>
+				<!-- head -->
+				<circle cx="108" cy="30" fill="currentColor" r="15"></circle>
+				<!-- eye -->
+				<g>
+					<circle class="cat-eye-white" cx="112" cy="28" fill="var(--color-global-bg)" r="4.2"></circle>
+					<circle class="cat-pupil" cx="113" cy="28" fill="currentColor" r="2"></circle>
+				</g>
+				<!-- nose + whiskers -->
+				<path d="M97 36 l 3.4 1.8 l -3.4 1.8 z" fill="var(--color-accent)"></path>
+				<g stroke="currentColor" stroke-linecap="round" stroke-width="1.4" opacity="0.65">
+					<path d="M84 34 h -9"></path>
+					<path d="M85 40 l -8.6 3"></path>
+				</g>
+				<!-- ground hint -->
+				<ellipse class="cat-ground" cx="70" cy="88" fill="currentColor" opacity="0.12" rx="40" ry="3.5"></ellipse>
+			</svg>
+
+			<!-- sitting pose -->
+			<svg class="pose pose-sit" viewBox="0 0 110 96" xmlns="http://www.w3.org/2000/svg">
+				<!-- tail wrapped around -->
+				<path
+					d="M28 78 C 20 70, 22 60, 32 58 C 44 56, 58 64, 66 72"
+					fill="none"
+					stroke="currentColor"
+					stroke-linecap="round"
+					stroke-width="7"
+				></path>
+				<!-- haunch + body -->
+				<path
+					d="M34 84 C 24 84, 22 70, 30 58 C 36 48, 48 44, 60 48 L 64 84 Z"
+					fill="currentColor"
+				></path>
+				<rect fill="currentColor" height="34" rx="14" width="30" x="54" y="50"></rect>
+				<!-- front paws -->
+				<rect fill="currentColor" height="10" rx="5" width="9" x="58" y="78"></rect>
+				<rect fill="currentColor" height="10" rx="5" width="9" x="70" y="78"></rect>
+				<!-- ears -->
+				<path d="M60 10 L 55 25 L 65 25 Z" fill="currentColor"></path>
+				<path d="M80 10 L 76 25 L 85 25 Z" fill="currentColor"></path>
+				<!-- head -->
+				<circle cx="70" cy="32" fill="currentColor" r="15"></circle>
+				<g>
+					<circle class="cat-eye-white" cx="64" cy="31" fill="var(--color-global-bg)" r="4"></circle>
+					<circle class="cat-pupil" cx="65" cy="31" fill="var(--color-accent)" r="2"></circle>
+					<circle class="cat-eye-white" cx="78" cy="31" fill="var(--color-global-bg)" r="4"></circle>
+					<circle class="cat-pupil" cx="79" cy="31" fill="var(--color-accent)" r="2"></circle>
+				</g>
+				<path d="M68 40 l 3.4 1.8 l -3.4 1.8 z" fill="var(--color-accent)"></path>
+				<ellipse class="cat-ground" cx="58" cy="91" fill="currentColor" opacity="0.12" rx="34" ry="3.5"></ellipse>
+			</svg>
+
+			<!-- sleeping pose -->
+			<svg class="pose pose-sleep" viewBox="0 0 110 70" xmlns="http://www.w3.org/2000/svg">
+				<!-- tail -->
+				<path
+					d="M26 58 C 18 52, 22 44, 30 46"
+					fill="none"
+					stroke="currentColor"
+					stroke-linecap="round"
+					stroke-width="7"
+				></path>
+				<!-- curled body -->
+				<ellipse cx="58" cy="52" fill="currentColor" rx="34" ry="16"></ellipse>
+				<circle cx="40" cy="40" fill="currentColor" r="13"></circle>
+				<path d="M52 52 h 8" stroke="var(--color-global-bg)" stroke-linecap="round" stroke-width="2"></path>
+				<ellipse class="cat-ground" cx="58" cy="69" fill="currentColor" opacity="0.12" rx="38" ry="3"></ellipse>
+			</svg>
+
+			<!-- zzz -->
+			<div class="cat-zzz" id="cat-zzz">
+				<span>z</span><span>z</span><span>z</span>
+			</div>
+
+			<!-- hearts on pet -->
+			<div class="cat-hearts" id="cat-hearts">
+				<svg fill="var(--color-accent)" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+					<path
+						d="M12 21c-4.8-3.9-8-6.9-8-10.4C4 7.6 6.4 6 8.5 6c1.5 0 2.8.8 3.5 2 .7-1.2 2-2 3.5-2C17.6 6 20 7.6 20 10.6c0 3.5-3.2 6.5-8 10.4z"
+					></path>
+				</svg>
+				<svg fill="var(--color-accent)" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+					<path
+						d="M12 21c-4.8-3.9-8-6.9-8-10.4C4 7.6 6.4 6 8.5 6c1.5 0 2.8.8 3.5 2 .7-1.2 2-2 3.5-2C17.6 6 20 7.6 20 10.6c0 3.5-3.2 6.5-8 10.4z"
+					></path>
+				</svg>
+			</div>
+			<!-- the little ball it plays with -->
+			<div class="cat-ball" id="cat-ball"></div>
+		</div>
+	</div>
+</aside>
+
+<style>
+	/* ---- placement ---- */
+	#mascot-cat {
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		height: 130px;
+		pointer-events: none;
+		z-index: 30;
+	}
+	.cat-mover {
+		position: absolute;
+		bottom: 10px;
+		left: 0;
+		transform: translateX(4rem);
+		transition: transform 2.4s linear;
+	}
+	.cat-inner {
+		position: relative;
+		width: 120px;
+		color: var(--color-global-text);
+		transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+	}
+	.cat-inner.walk-flick {
+		transition: none;
+	}
+	/* the ground lane: a faint tone step under the cat so it reads as standing on something */
+	.cat-mover::after {
+		content: "";
+		position: absolute;
+		bottom: -6px;
+		left: -30px;
+		width: 170px;
+		height: 7px;
+		background: var(--color-global-text);
+		opacity: 0.07;
+		border-radius: 4px;
+	}
+	.flip .pose-walk,
+	.flip .pose-sit {
+		transform: scaleX(-1);
+	}
+
+	/* ---- poses: exactly one visible ---- */
+	.pose {
+		color: var(--color-global-text);
+	}
+	.pose-walk { width: 120px; }
+	.pose-sit  { width: 100px; position: absolute; left: 8px; bottom: 0; }
+	.pose-sleep { width: 110px; position: absolute; left: 4px; bottom: 4px; }
+	#mascot-cat[data-pose="walk"] .pose-walk,
+	#mascot-cat[data-pose="sit"] .pose-sit,
+	#mascot-cat[data-pose="sleep"] .pose-sleep {
+		display: block;
+	}
+	#mascot-cat[data-pose="walk"] .pose-sit,
+	#mascot-cat[data-pose="walk"] .pose-sleep,
+	#mascot-cat[data-pose="sit"] .pose-walk,
+	#mascot-cat[data-pose="sit"] .pose-sleep,
+	#mascot-cat[data-pose="sleep"] .pose-walk,
+	#mascot-cat[data-pose="sleep"] .pose-sit {
+		display: none;
+	}
+
+	/* ---- walking gait ---- */
+	[data-state="walk"] .legs .leg {
+		transform-origin: 50% 0;
+		animation: cat-step 0.42s ease-in-out infinite;
+	}
+	[data-state="walk"] .legs .leg-front-2,
+	[data-state="walk"] .legs .leg-back-2 {
+		animation-delay: 0.21s;
+	}
+	@keyframes cat-step {
+		0% { transform: rotate(12deg); }
+		50% { transform: rotate(-14deg); }
+		100% { transform: rotate(12deg); }
+	}
+
+	/* ---- tail ---- */
+	.pose-walk .cat-tail {
+		transform-origin: 30px 52px;
+		animation: cat-tail-sway 1.6s ease-in-out infinite;
+	}
+	.pose-sit .cat-tail {
+		transform-origin: 0 0;
+	}
+	@keyframes cat-tail-sway {
+		0%, 100% { transform: rotate(0deg); }
+		50% { transform: rotate(9deg); }
+	}
+
+	/* ---- ball play ---- */
+	.cat-ball {
+		position: absolute;
+		bottom: 6px;
+		width: 14px;
+		height: 14px;
+		border-radius: 999px;
+		background: var(--color-accent);
+		opacity: 0;
+		pointer-events: none;
+		transition: transform 0.7s cubic-bezier(0.3, 0.9, 0.4, 1), opacity 0.3s ease;
+	}
+	[data-ball="1"] .cat-ball {
+		opacity: 1;
+	}
+
+	/* ---- sleep ---- */
+	#mascot-cat[data-pose="sleep"] .cat-zzz {
+		display: block;
+	}
+	.cat-zzz {
+		display: none;
+		position: absolute;
+		top: -28px;
+		right: -6px;
+		color: var(--color-accent);
+	}
+	.cat-zzz span {
+		display: inline-block;
+		font-weight: 700;
+		font-size: 11px;
+		margin-left: 1px;
+		animation: cat-zzz 1.8s ease-in-out infinite;
+	}
+	.cat-zzz span:nth-child(2) { animation-delay: 0.3s; }
+	.cat-zzz span:nth-child(3) { animation-delay: 0.6s; }
+	@keyframes cat-zzz {
+		0% { transform: translateY(6px); opacity: 0; }
+		40% { opacity: 1; }
+		100% { transform: translateY(-10px); opacity: 0; }
+	}
+
+	/* ---- pet reaction ---- */
+	#mascot-cat .cat-hearts {
+		display: none;
+	}
+	#mascot-cat.pet .cat-hearts {
+		display: flex;
+		position: absolute;
+		top: -22px;
+		left: 50%;
+		transform: translateX(-50%);
+		gap: 4px;
+	}
+	#mascot-cat.pet .cat-hearts svg {
+		width: 16px;
+		height: 16px;
+		animation: cat-heart 0.9s ease-out forwards;
+	}
+	#mascot-cat.pet .cat-hearts svg:last-child {
+		animation-delay: 0.15s;
+	}
+	@keyframes cat-heart {
+		0% { transform: translateY(6px) scale(0.6); opacity: 0; }
+		30% { opacity: 1; }
+		100% { transform: translateY(-14px) scale(1); opacity: 0; }
+	}
+
+	/* the cat itself is the click target; everything else passes through */
+	#mascot-cat .pose {
+		pointer-events: auto;
+		cursor: pointer;
+	}
+
+	@media (max-width: 480px) {
+		.pose-walk { width: 92px; }
+		.pose-sit { width: 78px; }
+		.pose-sleep { width: 84px; }
+		.cat-inner { width: 92px; }
+		#mascot-cat { height: 96px; }
+	}
+
+	/* ---- reduced motion: calm sitting cat, no loop ---- */
+	@media (prefers-reduced-motion: reduce) {
+		.cat-zzz, .pose-sleep { display: none !important; }
+		.pose-sit { display: block !important; }
+		.pose-walk { display: none !important; }
+		.cat-mover { transition: none; }
+		.legs .leg, .cat-tail, .cat-zzz span { animation: none !important; }
+	}
+</style>
+
+<script>
+	(function catLife() {
+		const catEl = document.getElementById("mascot-cat");
+		if (!catEl) return;
+		const cat: HTMLElement = catEl;
+		const inner = document.getElementById("cat-inner")!;
+		const ball = document.getElementById("cat-ball")!;
+		const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+		if (reduce) {
+			cat.setAttribute("data-pose", "sit");
+			cat.setAttribute("data-state", "sit");
+			return;
+		}
+
+		const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
+		const rand = (lo: number, hi: number) => lo + Math.random() * (hi - lo);
+
+		// 10px of slack: the cat never touches the very edge
+		const slack = 12;
+
+		function laneWidth() {
+			return window.innerWidth;
+		}
+		function catWidth() {
+			return inner.offsetWidth || 110;
+		}
+		let x = rand(0.2, 0.6) * Math.max(0, laneWidth() - catWidth());
+		let flip = false;
+
+		cat.setAttribute("data-pose", "walk");
+	inner.parentElement!.style.transform = `translateX(${x}px)`;
+
+		function walkTo(target: number, speedPxS = 70): Promise<void> {
+			return new Promise((resolve) => {
+				const from = x;
+				const dist = Math.abs(target - from);
+				if (dist < 4) return resolve();
+				flip = target < from;
+				cat.classList.toggle("flip", flip);
+				cat.setAttribute("data-pose", "walk");
+				cat.setAttribute("data-state", "walk");
+				const duration = dist / speedPxS;
+				const mover = inner.parentElement!;
+				mover.style.transition = `transform ${duration}s linear`;
+				mover.style.transform = `translateX(${target}px)`;
+				x = target;
+				setTimeout(resolve, duration * 1000 + 60);
+			});
+		}
+
+		async function sit(ms: number) {
+			cat.setAttribute("data-pose", "sit");
+			cat.setAttribute("data-state", "sit");
+			await wait(ms);
+		}
+
+		async function sleep(ms: number) {
+			cat.setAttribute("data-pose", "sleep");
+			cat.setAttribute("data-state", "sleep");
+			await wait(ms);
+		}
+
+		// hop without changing x
+		async function hop() {
+			inner.style.transform = `translateY(-22px)`;
+			await wait(200);
+			inner.style.transform = `translateY(0)`;
+			await wait(220);
+		}
+
+		// spawn the ball a little away from the cat, walk to it, swat it twice
+		async function playWithBall() {
+			const w = laneWidth();
+			const cw = catWidth();
+			const dirRight = x < 60 || (w - cw - slack - 60 > x + 60 && Math.random() < 0.5);
+			let ballAbs = Math.max(
+				slack,
+				Math.min(w - 30, (x + cw / 2) + (dirRight ? 1 : -1) * rand(90, 160)),
+			);
+			cat.setAttribute("data-ball", "1");
+			ball.style.transition = "none";
+			ball.style.transform = `translateX(${ballAbs - x}px)`;
+			await wait(350);
+
+			await walkTo(Math.max(slack, Math.min(w - cw - slack, ballAbs - cw * 0.55 - (dirRight ? 0 : cw * 0.0))));
+			await sit(500);
+
+			for (let i = 0; i < 2; i++) {
+				await hop();
+				ball.style.transition = "transform 0.7s cubic-bezier(0.3, 0.9, 0.4, 1)";
+				const rollTo = Math.max(slack, Math.min(w - 30, ballAbs + (dirRight ? 1 : -1) * rand(70, 130)));
+				ball.style.transform = `translateX(${rollTo - x}px)`;
+				ballAbs = rollTo;
+				const nextX = Math.max(slack, Math.min(w - cw - slack, rollTo - cw * 0.55));
+				await walkTo(nextX, 110);
+				await wait(300);
+			}
+			cat.setAttribute("data-ball", "0");
+		}
+
+		// keep the cat inside its lane when the window resizes
+		window.addEventListener("resize", () => {
+			x = Math.min(x, Math.max(slack, laneWidth() - catWidth() - slack));
+		}, { passive: true });
+
+		// eyes follow the cursor
+		document.addEventListener("mousemove", (e) => {
+			const r = inner.getBoundingClientRect();
+			const dx = Math.max(-1, Math.min(1, (e.clientX - (r.left + r.width / 2)) / 200));
+			cat.querySelectorAll<SVGElement>(".cat-pupil").forEach((p) => {
+				p.style.transform = `translateX(${(dx * 2.2).toFixed(1)}px)`;
+			});
+		});
+
+		// pet the cat
+		inner.addEventListener("click", () => {
+			cat.classList.add("pet");
+			hop();
+			setTimeout(() => cat.classList.remove("pet"), 950);
+		});
+
+		// main life loop
+		(async () => {
+			while (true) {
+				while (document.hidden) await wait(1000);
+
+				// stroll somewhere on its ground
+				const w = laneWidth();
+				const cw = catWidth();
+				const target = rand(slack, Math.max(slack + 10, w - cw - slack));
+				await walkTo(target);
+
+				// then do whatever a jolly cat does
+				const roll = Math.random();
+				if (roll < 0.38) {
+					await sit(rand(3000, 7000));
+				} else if (roll < 0.58) {
+					await playWithBall();
+				} else if (roll < 0.72) {
+					// zoomies: a few hops in place, then off again
+					await sit(500);
+					const hops = 2 + Math.floor(Math.random() * 2);
+					for (let i = 0; i < hops; i++) await hop();
+				} else if (roll < 0.88) {
+					// walk a bit more before settling
+					const t2 = rand(slack, Math.max(slack + 10, w - cw - slack));
+					await walkTo(t2);
+					await sit(rand(2000, 4000));
+				} else {
+					await sleep(rand(6000, 11000));
+				}
+			}
+		})();
+	})();
+</script>
