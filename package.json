@@ -5,8 +5,11 @@
 	"private": false,
 	"scripts": {
 		"postinstall": "npm rebuild sharp --force",
+		"cat-assets": "node scripts/cat-assets.mjs unpack",
+		"predev": "npm run cat-assets",
 		"dev": "astro dev",
 		"start": "astro dev",
+		"prebuild": "npm run cat-assets",
 		"build": "astro build",
 		"postbuild": "pagefind --site dist",
 		"preview": "astro preview",
@@ -55,5 +58,8 @@
 		"prettier-plugin-tailwindcss": "^0.8.1",
 		"reading-time": "^1.5.0",
 		"typescript": "^6.0.3"
+	},
+	"overrides": {
+		"sharp": "^0.35.4"
 	}
 }

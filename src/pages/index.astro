@@ -75,6 +75,7 @@ const contactLinks: {
 		</div>
 		<img
 			data-motion="photo"
+			data-cat-perch
 			src="/avatar.jpg"
 			alt="Varun Gupta"
 			class="w-56 justify-self-center sm:w-80 lg:w-96"
@@ -84,57 +85,31 @@ const contactLinks: {
 	</section>
 	<section class="mt-20">
 		<h2 class="title text-accent mb-8 text-xl" data-motion>Find me on</h2>
-		<ul class="grid gap-y-2 sm:grid-cols-2 sm:gap-x-12" role="list">
+		<ul class="grid grid-cols-2 gap-x-6 gap-y-2 sm:flex sm:justify-between" role="list">
 			{
 				contactLinks.map(({ friendlyName, link, name, title }) => {
 					const isMail = link.startsWith("mailto:");
 					return (
-						<li data-motion class:list={isMail && "sm:col-span-2"}>
+						<li data-motion>
 							<a
-								class={
-									isMail
-										? "group flex items-center gap-4 rounded-md bg-accent px-4 py-3 text-white hover:translate-x-1 hover:opacity-90"
-										: "group flex items-center gap-4 py-3 hover:text-accent"
-								}
+								class="group hover:text-accent focus-visible:outline-accent flex items-center gap-3 rounded-sm py-3 transition-colors focus-visible:outline-2 focus-visible:outline-offset-4"
 								href={link}
-								rel="noreferrer"
+								rel={isMail ? undefined : "noreferrer"}
 								target={isMail ? undefined : "_blank"}
+								title={title}
 							>
 								<Icon
 									aria-hidden="true"
-									class="h-7 w-7 shrink-0 scale-100 opacity-100 transition-transform group-hover:scale-110"
+									class="h-7 w-7 shrink-0 transition-transform group-hover:scale-110"
 									name={name}
 								/>
-								<span>
-									<span class="block font-semibold">{friendlyName}</span>
-									<span class={`block text-sm break-all ${isMail ? "text-white/80" : "text-muted"}`}>{title}</span>
-								</span>
-								<svg
-									aria-hidden="true"
-									class="ms-auto hidden transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 sm:block"
-									fill="none"
-									height="20"
-									stroke="currentColor"
-									stroke-linecap="round"
-									stroke-linejoin="round"
-									stroke-width="1.5"
-									viewBox="0 0 24 24"
-									width="20"
-								>
-									<path d="M7 17 17 7M7 7h10v10" />
-								</svg>
+								<span class="font-semibold sm:whitespace-nowrap">{friendlyName}</span>
 							</a>
 						</li>
 					);
 				})
 			}
 		</ul>
-		<figure class="text-muted mt-14 text-sm italic" data-motion>
-			<blockquote class="text-accent-2 text-xl not-italic sm:text-2xl">
-				“A smooth sea never made a skilled sailor.”
-			</blockquote>
-			<figcaption class="mt-2">— Franklin D. Roosevelt</figcaption>
-		</figure>
 	</section>
 	{
 		pinnedPosts.length > 0 && (

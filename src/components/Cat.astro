@@ -1,465 +1,681 @@
 ---
-// The website's cat. Fixed at the bottom of every page: walks around, sits,
-// sleeps, playfully chases a little ball, hops at the cursor.
-// Purely decorative: pointer-events pass through everywhere except the cat itself.
+// The site's cat: a pixel cat that lives on the bottom edge of the window. It wanders, sits and
+// grooms, naps when it has been awake a while, chases the cursor when it comes down to its level,
+// and jumps up onto elements marked data-cat-perch (the photos) to sit, stroll and nap there.
+// In dark mode it becomes a black silhouette with only its eyes showing.
+// Sprites: "Pixel Cats" by Last tick, decrypted into /cat/ at build time (scripts/cat-assets.mjs).
+// Without them the cat stays hidden. Purely decorative: only its body takes clicks.
 ---
 
-<aside id="mascot-cat" data-pose="walk" data-state="walk" aria-hidden="true">
-	<div class="cat-mover" id="cat-mover">
-		<div class="cat-inner" id="cat-inner">
-			<!-- walking pose (side profile, faces right) -->
-			<svg class="pose pose-walk" id="pose-walk" viewBox="0 0 140 92" xmlns="http://www.w3.org/2000/svg">
-				<!-- tail -->
-				<g class="cat-tail">
-					<path
-						fill="none"
-						stroke="currentColor"
-						stroke-linecap="round"
-						stroke-width="6.5"
-						d="M34 54 C 16 48, 6 34, 14 20 C 18 13, 27 13, 26 21"
-					></path>
-				</g>
-				<!-- body -->
-				<rect fill="currentColor" height="26" rx="13" width="64" x="30" y="42"></rect>
-				<!-- legs -->
-				<g class="legs">
-					<rect class="leg leg-back-1" fill="currentColor" height="20" rx="4.5" width="9" x="34" y="62"></rect>
-					<rect class="leg leg-back-2" fill="currentColor" height="20" rx="4.5" width="9" x="50" y="62"></rect>
-					<rect class="leg leg-front-1" fill="currentColor" height="20" rx="4.5" width="9" x="68" y="62"></rect>
-					<rect class="leg leg-front-2" fill="currentColor" height="20" rx="4.5" width="9" x="84" y="62"></rect>
-				</g>
-				<!-- ears -->
-				<path d="M126 8 L 117.5 22 L 127 24 Z" fill="currentColor"></path>
-				<path d="M105 7 L 103 22 L 112 21 Z" fill="currentColor"></path>
-				<!-- head -->
-				<circle cx="108" cy="30" fill="currentColor" r="15"></circle>
-				<!-- eye -->
-				<g>
-					<circle class="cat-eye-white" cx="112" cy="28" fill="var(--color-global-bg)" r="4.2"></circle>
-					<circle class="cat-pupil" cx="113" cy="28" fill="currentColor" r="2"></circle>
-				</g>
-				<!-- nose + whiskers -->
-				<path d="M97 36 l 3.4 1.8 l -3.4 1.8 z" fill="var(--color-accent)"></path>
-				<g stroke="currentColor" stroke-linecap="round" stroke-width="1.4" opacity="0.65">
-					<path d="M84 34 h -9"></path>
-					<path d="M85 40 l -8.6 3"></path>
-				</g>
-				<!-- ground hint -->
-				<ellipse class="cat-ground" cx="70" cy="88" fill="currentColor" opacity="0.12" rx="40" ry="3.5"></ellipse>
-			</svg>
-
-			<!-- sitting pose -->
-			<svg class="pose pose-sit" viewBox="0 0 110 96" xmlns="http://www.w3.org/2000/svg">
-				<!-- tail wrapped around -->
-				<path
-					d="M28 78 C 20 70, 22 60, 32 58 C 44 56, 58 64, 66 72"
-					fill="none"
-					stroke="currentColor"
-					stroke-linecap="round"
-					stroke-width="7"
-				></path>
-				<!-- haunch + body -->
-				<path
-					d="M34 84 C 24 84, 22 70, 30 58 C 36 48, 48 44, 60 48 L 64 84 Z"
-					fill="currentColor"
-				></path>
-				<rect fill="currentColor" height="34" rx="14" width="30" x="54" y="50"></rect>
-				<!-- front paws -->
-				<rect fill="currentColor" height="10" rx="5" width="9" x="58" y="78"></rect>
-				<rect fill="currentColor" height="10" rx="5" width="9" x="70" y="78"></rect>
-				<!-- ears -->
-				<path d="M60 10 L 55 25 L 65 25 Z" fill="currentColor"></path>
-				<path d="M80 10 L 76 25 L 85 25 Z" fill="currentColor"></path>
-				<!-- head -->
-				<circle cx="70" cy="32" fill="currentColor" r="15"></circle>
-				<g>
-					<circle class="cat-eye-white" cx="64" cy="31" fill="var(--color-global-bg)" r="4"></circle>
-					<circle class="cat-pupil" cx="65" cy="31" fill="var(--color-accent)" r="2"></circle>
-					<circle class="cat-eye-white" cx="78" cy="31" fill="var(--color-global-bg)" r="4"></circle>
-					<circle class="cat-pupil" cx="79" cy="31" fill="var(--color-accent)" r="2"></circle>
-				</g>
-				<path d="M68 40 l 3.4 1.8 l -3.4 1.8 z" fill="var(--color-accent)"></path>
-				<ellipse class="cat-ground" cx="58" cy="91" fill="currentColor" opacity="0.12" rx="34" ry="3.5"></ellipse>
-			</svg>
-
-			<!-- sleeping pose -->
-			<svg class="pose pose-sleep" viewBox="0 0 110 70" xmlns="http://www.w3.org/2000/svg">
-				<!-- tail -->
-				<path
-					d="M26 58 C 18 52, 22 44, 30 46"
-					fill="none"
-					stroke="currentColor"
-					stroke-linecap="round"
-					stroke-width="7"
-				></path>
-				<!-- curled body -->
-				<ellipse cx="58" cy="52" fill="currentColor" rx="34" ry="16"></ellipse>
-				<circle cx="40" cy="40" fill="currentColor" r="13"></circle>
-				<path d="M52 52 h 8" stroke="var(--color-global-bg)" stroke-linecap="round" stroke-width="2"></path>
-				<ellipse class="cat-ground" cx="58" cy="69" fill="currentColor" opacity="0.12" rx="38" ry="3"></ellipse>
-			</svg>
-
-			<!-- zzz -->
-			<div class="cat-zzz" id="cat-zzz">
-				<span>z</span><span>z</span><span>z</span>
-			</div>
-
-			<!-- hearts on pet -->
-			<div class="cat-hearts" id="cat-hearts">
-				<svg fill="var(--color-accent)" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-					<path
-						d="M12 21c-4.8-3.9-8-6.9-8-10.4C4 7.6 6.4 6 8.5 6c1.5 0 2.8.8 3.5 2 .7-1.2 2-2 3.5-2C17.6 6 20 7.6 20 10.6c0 3.5-3.2 6.5-8 10.4z"
-					></path>
-				</svg>
-				<svg fill="var(--color-accent)" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-					<path
-						d="M12 21c-4.8-3.9-8-6.9-8-10.4C4 7.6 6.4 6 8.5 6c1.5 0 2.8.8 3.5 2 .7-1.2 2-2 3.5-2C17.6 6 20 7.6 20 10.6c0 3.5-3.2 6.5-8 10.4z"
-					></path>
-				</svg>
-			</div>
-			<!-- the little ball it plays with -->
-			<div class="cat-ball" id="cat-ball"></div>
-		</div>
-	</div>
-</aside>
+<div id="site-cat" class="site-cat" aria-hidden="true" hidden>
+	<div class="cat-sprite"></div>
+	<div class="cat-hit"></div>
+</div>
 
 <style>
-	/* ---- placement ---- */
-	#mascot-cat {
+	/* sizes are set from the script, which picks the sprite scale for the screen */
+	.site-cat {
 		position: fixed;
-		bottom: 0;
+		top: 0;
 		left: 0;
-		right: 0;
-		height: 130px;
-		pointer-events: none;
 		z-index: 30;
-	}
-	.cat-mover {
-		position: absolute;
-		bottom: 10px;
-		left: 0;
-		transform: translateX(4rem);
-		transition: transform 2.4s linear;
-	}
-	.cat-inner {
-		position: relative;
-		width: 120px;
-		color: var(--color-global-text);
-		transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
-	}
-	.cat-inner.walk-flick {
-		transition: none;
-	}
-	/* the ground lane: a faint tone step under the cat so it reads as standing on something */
-	.cat-mover::after {
-		content: "";
-		position: absolute;
-		bottom: -6px;
-		left: -30px;
-		width: 170px;
-		height: 7px;
-		background: var(--color-global-text);
-		opacity: 0.07;
-		border-radius: 4px;
-	}
-	.flip .pose-walk,
-	.flip .pose-sit {
-		transform: scaleX(-1);
-	}
-
-	/* ---- poses: exactly one visible ---- */
-	.pose {
-		color: var(--color-global-text);
-	}
-	.pose-walk { width: 120px; }
-	.pose-sit  { width: 100px; position: absolute; left: 8px; bottom: 0; }
-	.pose-sleep { width: 110px; position: absolute; left: 4px; bottom: 4px; }
-	#mascot-cat[data-pose="walk"] .pose-walk,
-	#mascot-cat[data-pose="sit"] .pose-sit,
-	#mascot-cat[data-pose="sleep"] .pose-sleep {
-		display: block;
-	}
-	#mascot-cat[data-pose="walk"] .pose-sit,
-	#mascot-cat[data-pose="walk"] .pose-sleep,
-	#mascot-cat[data-pose="sit"] .pose-walk,
-	#mascot-cat[data-pose="sit"] .pose-sleep,
-	#mascot-cat[data-pose="sleep"] .pose-walk,
-	#mascot-cat[data-pose="sleep"] .pose-sit {
-		display: none;
-	}
-
-	/* ---- walking gait ---- */
-	[data-state="walk"] .legs .leg {
-		transform-origin: 50% 0;
-		animation: cat-step 0.42s ease-in-out infinite;
-	}
-	[data-state="walk"] .legs .leg-front-2,
-	[data-state="walk"] .legs .leg-back-2 {
-		animation-delay: 0.21s;
-	}
-	@keyframes cat-step {
-		0% { transform: rotate(12deg); }
-		50% { transform: rotate(-14deg); }
-		100% { transform: rotate(12deg); }
-	}
-
-	/* ---- tail ---- */
-	.pose-walk .cat-tail {
-		transform-origin: 30px 52px;
-		animation: cat-tail-sway 1.6s ease-in-out infinite;
-	}
-	.pose-sit .cat-tail {
-		transform-origin: 0 0;
-	}
-	@keyframes cat-tail-sway {
-		0%, 100% { transform: rotate(0deg); }
-		50% { transform: rotate(9deg); }
-	}
-
-	/* ---- ball play ---- */
-	.cat-ball {
-		position: absolute;
-		bottom: 6px;
-		width: 14px;
-		height: 14px;
-		border-radius: 999px;
-		background: var(--color-accent);
-		opacity: 0;
 		pointer-events: none;
-		transition: transform 0.7s cubic-bezier(0.3, 0.9, 0.4, 1), opacity 0.3s ease;
+		will-change: transform;
 	}
-	[data-ball="1"] .cat-ball {
-		opacity: 1;
+	.cat-sprite {
+		width: 100%;
+		height: 100%;
+		background: url("/cat/black.png") 0 0 no-repeat;
+		image-rendering: pixelated;
 	}
-
-	/* ---- sleep ---- */
-	#mascot-cat[data-pose="sleep"] .cat-zzz {
-		display: block;
-	}
-	.cat-zzz {
-		display: none;
+	.cat-hit {
 		position: absolute;
-		top: -28px;
-		right: -6px;
-		color: var(--color-accent);
-	}
-	.cat-zzz span {
-		display: inline-block;
-		font-weight: 700;
-		font-size: 11px;
-		margin-left: 1px;
-		animation: cat-zzz 1.8s ease-in-out infinite;
-	}
-	.cat-zzz span:nth-child(2) { animation-delay: 0.3s; }
-	.cat-zzz span:nth-child(3) { animation-delay: 0.6s; }
-	@keyframes cat-zzz {
-		0% { transform: translateY(6px); opacity: 0; }
-		40% { opacity: 1; }
-		100% { transform: translateY(-10px); opacity: 0; }
-	}
-
-	/* ---- pet reaction ---- */
-	#mascot-cat .cat-hearts {
-		display: none;
-	}
-	#mascot-cat.pet .cat-hearts {
-		display: flex;
-		position: absolute;
-		top: -22px;
-		left: 50%;
-		transform: translateX(-50%);
-		gap: 4px;
-	}
-	#mascot-cat.pet .cat-hearts svg {
-		width: 16px;
-		height: 16px;
-		animation: cat-heart 0.9s ease-out forwards;
-	}
-	#mascot-cat.pet .cat-hearts svg:last-child {
-		animation-delay: 0.15s;
-	}
-	@keyframes cat-heart {
-		0% { transform: translateY(6px) scale(0.6); opacity: 0; }
-		30% { opacity: 1; }
-		100% { transform: translateY(-14px) scale(1); opacity: 0; }
-	}
-
-	/* the cat itself is the click target; everything else passes through */
-	#mascot-cat .pose {
 		pointer-events: auto;
 		cursor: pointer;
-	}
-
-	@media (max-width: 480px) {
-		.pose-walk { width: 92px; }
-		.pose-sit { width: 78px; }
-		.pose-sleep { width: 84px; }
-		.cat-inner { width: 92px; }
-		#mascot-cat { height: 96px; }
-	}
-
-	/* ---- reduced motion: calm sitting cat, no loop ---- */
-	@media (prefers-reduced-motion: reduce) {
-		.cat-zzz, .pose-sleep { display: none !important; }
-		.pose-sit { display: block !important; }
-		.pose-walk { display: none !important; }
-		.cat-mover { transition: none; }
-		.legs .leg, .cat-tail, .cat-zzz span { animation: none !important; }
 	}
 </style>
 
 <script>
-	(function catLife() {
-		const catEl = document.getElementById("mascot-cat");
-		if (!catEl) return;
-		const cat: HTMLElement = catEl;
-		const inner = document.getElementById("cat-inner")!;
-		const ball = document.getElementById("cat-ball")!;
-		const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-		if (reduce) {
-			cat.setAttribute("data-pose", "sit");
-			cat.setAttribute("data-state", "sit");
-			return;
-		}
+	type Anim = { row: number; col?: number; frames?: number; fps?: number; dy?: number };
+	type Dir = "L" | "R";
+	type Gait = "walk" | "run";
+	type Point = { sx: number; fy: number }; // screen x of the cell's left edge, screen y of the feet
 
-		const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
+	const SHEET_W = 896;
+	const SHEET_H = 4608;
+
+	// Rows of the 64x64 sheet. dy lowers poses whose artwork sits higher in the cell, so every pose
+	// rests on the same ground line.
+	const A = {
+		sitF: { row: 0, col: 0 },
+		sitL: { row: 0, col: 2 },
+		sitR: { row: 0, col: 3 },
+		standL: { row: 1, col: 2 },
+		standR: { row: 1, col: 3 },
+		lieL: { row: 7, col: 1, dy: 3 },
+		lieR: { row: 7, col: 2, dy: 3 },
+		walkL: { row: 4, frames: 6, fps: 9 },
+		walkR: { row: 5, frames: 6, fps: 9 },
+		runR: { row: 10, frames: 5, fps: 12 },
+		runL: { row: 11, frames: 5, fps: 12 },
+		lickSit: { row: 12, frames: 8, fps: 8 },
+		meowSit: { row: 14, frames: 3, fps: 6 },
+		scratchL: { row: 17, frames: 8, fps: 10 },
+		scratchR: { row: 18, frames: 8, fps: 10 },
+		tailSitL: { row: 21, frames: 5, fps: 6 },
+		tailSitR: { row: 22, frames: 5, fps: 6 },
+		tailStandL: { row: 25, frames: 5, fps: 6 },
+		tailStandR: { row: 26, frames: 5, fps: 6 },
+		tailLieL: { row: 27, frames: 3, fps: 4, dy: 1 },
+		tailLieR: { row: 28, frames: 3, fps: 4, dy: 2 },
+		swipeL: { row: 32, frames: 11, fps: 14 },
+		swipeR: { row: 35, frames: 11, fps: 14 },
+		yawn: { row: 43, frames: 7, fps: 7 },
+		sleepLoafL: { row: 44, frames: 2, fps: 0.8, dy: 2 },
+		sleepLoafR: { row: 45, frames: 2, fps: 0.8, dy: 2 },
+		sleepCurlL: { row: 48, frames: 2, fps: 0.7, dy: 6 },
+		sleepCurlR: { row: 49, frames: 2, fps: 0.7, dy: 6 },
+		sleepCurl2L: { row: 50, frames: 2, fps: 0.7, dy: 6 },
+		sleepCurl2R: { row: 51, frames: 2, fps: 0.7, dy: 6 },
+		jumpL: { row: 63, frames: 5, fps: 10 },
+		jumpR: { row: 64, frames: 5, fps: 10 },
+		jumpCrouchL: { row: 63, col: 0, frames: 2, fps: 9 },
+		jumpCrouchR: { row: 64, col: 0, frames: 2, fps: 9 },
+		jumpAirL: { row: 63, col: 2 },
+		jumpAirR: { row: 64, col: 2 },
+		jumpLandL: { row: 63, col: 3, frames: 2, fps: 9 },
+		jumpLandR: { row: 64, col: 3, frames: 2, fps: 9 },
+		hind: { row: 65, frames: 4, fps: 6 },
+	} satisfies Record<string, Anim>;
+	type Sided = { [K in keyof typeof A]: K extends `${infer B}L` ? B : never }[keyof typeof A];
+
+	const el = document.getElementById("site-cat");
+	if (el) start(el);
+
+	function start(root: HTMLElement) {
+		const sprite = root.querySelector<HTMLElement>(".cat-sprite")!;
+		const hit = root.querySelector<HTMLElement>(".cat-hit")!;
+		const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+		const finePointer = matchMedia("(pointer: fine)").matches;
 		const rand = (lo: number, hi: number) => lo + Math.random() * (hi - lo);
+		const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
-		// 10px of slack: the cat never touches the very edge
-		const slack = 12;
+		// sprite scale: 64px cells drawn at 2.5x, or 2x on phones
+		const S = matchMedia("(max-width: 640px)").matches ? 2 : 2.5;
+		const CELL = 64 * S;
+		const FEET = 48 * S; // the feet rest on row 47 of a cell
+		const BODY_L = 12 * S; // the drawn body spans x 12..54 of a cell
+		const BODY_R = 54 * S;
+		const MID = 33 * S;
+		const WALK_SPEED = 2.4 * 9 * S; // px/s, matched to the paws in the 9fps walk cycle
+		const RUN_SPEED = 6 * 12 * S;
+		root.style.width = root.style.height = `${CELL}px`;
+		sprite.style.backgroundSize = `${SHEET_W * S}px ${SHEET_H * S}px`;
+		Object.assign(hit.style, { left: `${14 * S}px`, top: `${17 * S}px`, width: `${36 * S}px`, height: `${31 * S}px` });
 
-		function laneWidth() {
-			return window.innerWidth;
+		// --- where the cat is: on the floor (the window's bottom edge) or on top of a perch element.
+		// x is the cell's left edge relative to that surface.
+		let surface: HTMLElement | null = null;
+		let x = 0;
+		let air: { from: Point; to: () => Point; t0: number; dur: number; h: number; done: () => void } | null = null;
+		let facing: Dir = "R";
+		let anim: Anim = A.sitR;
+		let animT0 = performance.now();
+		let animCycles = 0; // 0 loops forever; otherwise hold the last frame after this many cycles
+		let animDone: (() => void) | null = null;
+		let move: { target: () => number; gait: Gait; abort?: () => boolean; done: () => void } | null = null;
+		let asleep = false;
+		let awakeSince = performance.now();
+
+		const side = (name: Sided) => A[`${name}${facing}` as keyof typeof A];
+		const floorY = () => window.innerHeight - 6;
+		function bounds(): [number, number] {
+			if (!surface) return [12 - BODY_L, Math.max(12 - BODY_L, window.innerWidth - 12 - BODY_R)];
+			const w = surface.getBoundingClientRect().width;
+			const lo = 2 * S - BODY_L;
+			const hi = w - 2 * S - BODY_R;
+			return hi < lo ? [(lo + hi) / 2, (lo + hi) / 2] : [lo, hi];
 		}
-		function catWidth() {
-			return inner.offsetWidth || 110;
-		}
-		let x = rand(0.2, 0.6) * Math.max(0, laneWidth() - catWidth());
-		let flip = false;
+		const clamp = (v: number) => {
+			const [lo, hi] = bounds();
+			return Math.min(hi, Math.max(lo, v));
+		};
+		const here = (): Point => {
+			if (!surface) return { sx: x, fy: floorY() };
+			const r = surface.getBoundingClientRect();
+			return { sx: r.left + x, fy: r.top };
+		};
+		const center = () => here().sx + MID;
 
-		cat.setAttribute("data-pose", "walk");
-	inner.parentElement!.style.transform = `translateX(${x}px)`;
-
-		function walkTo(target: number, speedPxS = 70): Promise<void> {
-			return new Promise((resolve) => {
-				const from = x;
-				const dist = Math.abs(target - from);
-				if (dist < 4) return resolve();
-				flip = target < from;
-				cat.classList.toggle("flip", flip);
-				cat.setAttribute("data-pose", "walk");
-				cat.setAttribute("data-state", "walk");
-				const duration = dist / speedPxS;
-				const mover = inner.parentElement!;
-				mover.style.transition = `transform ${duration}s linear`;
-				mover.style.transform = `translateX(${target}px)`;
-				x = target;
-				setTimeout(resolve, duration * 1000 + 60);
-			});
-		}
-
-		async function sit(ms: number) {
-			cat.setAttribute("data-pose", "sit");
-			cat.setAttribute("data-state", "sit");
-			await wait(ms);
-		}
-
-		async function sleep(ms: number) {
-			cat.setAttribute("data-pose", "sleep");
-			cat.setAttribute("data-state", "sleep");
-			await wait(ms);
-		}
-
-		// hop without changing x
-		async function hop() {
-			inner.style.transform = `translateY(-22px)`;
-			await wait(200);
-			inner.style.transform = `translateY(0)`;
-			await wait(220);
-		}
-
-		// spawn the ball a little away from the cat, walk to it, swat it twice
-		async function playWithBall() {
-			const w = laneWidth();
-			const cw = catWidth();
-			const dirRight = x < 60 || (w - cw - slack - 60 > x + 60 && Math.random() < 0.5);
-			let ballAbs = Math.max(
-				slack,
-				Math.min(w - 30, (x + cw / 2) + (dirRight ? 1 : -1) * rand(90, 160)),
-			);
-			cat.setAttribute("data-ball", "1");
-			ball.style.transition = "none";
-			ball.style.transform = `translateX(${ballAbs - x}px)`;
-			await wait(350);
-
-			await walkTo(Math.max(slack, Math.min(w - cw - slack, ballAbs - cw * 0.55 - (dirRight ? 0 : cw * 0.0))));
-			await sit(500);
-
-			for (let i = 0; i < 2; i++) {
-				await hop();
-				ball.style.transition = "transform 0.7s cubic-bezier(0.3, 0.9, 0.4, 1)";
-				const rollTo = Math.max(slack, Math.min(w - 30, ballAbs + (dirRight ? 1 : -1) * rand(70, 130)));
-				ball.style.transform = `translateX(${rollTo - x}px)`;
-				ballAbs = rollTo;
-				const nextX = Math.max(slack, Math.min(w - cw - slack, rollTo - cw * 0.55));
-				await walkTo(nextX, 110);
-				await wait(300);
+		// --- interruptions: an interaction bumps the epoch, and every pending wait of the
+		// behaviour it replaces resolves false so that behaviour stops where it is
+		let epoch = 0;
+		const pending = new Set<() => void>();
+		function interrupt() {
+			epoch++;
+			if (move) {
+				const done = move.done;
+				move = null;
+				done();
 			}
-			cat.setAttribute("data-ball", "0");
+			for (const finish of [...pending]) finish();
+		}
+		function delay(ms: number): Promise<boolean> {
+			const e = epoch;
+			return new Promise((resolve) => {
+				const finish = () => {
+					clearTimeout(id);
+					pending.delete(finish);
+					resolve(e === epoch);
+				};
+				const id = setTimeout(finish, ms);
+				pending.add(finish);
+			});
 		}
 
-		// keep the cat inside its lane when the window resizes
-		window.addEventListener("resize", () => {
-			x = Math.min(x, Math.max(slack, laneWidth() - catWidth() - slack));
-		}, { passive: true });
-
-		// eyes follow the cursor
-		document.addEventListener("mousemove", (e) => {
-			const r = inner.getBoundingClientRect();
-			const dx = Math.max(-1, Math.min(1, (e.clientX - (r.left + r.width / 2)) / 200));
-			cat.querySelectorAll<SVGElement>(".cat-pupil").forEach((p) => {
-				p.style.transform = `translateX(${(dx * 2.2).toFixed(1)}px)`;
+		function play(a: Anim) {
+			const done = animDone;
+			animDone = null;
+			anim = a;
+			animT0 = performance.now();
+			animCycles = 0;
+			done?.();
+		}
+		function playOnce(a: Anim, cycles = 1): Promise<boolean> {
+			const e = epoch;
+			play(a);
+			animCycles = cycles;
+			return new Promise((resolve) => {
+				animDone = () => resolve(e === epoch);
 			});
-		});
+		}
+		function moveTo(target: () => number, gait: Gait, abort?: () => boolean): Promise<boolean> {
+			const e = epoch;
+			return new Promise((resolve) => {
+				const t = clamp(target());
+				if (Math.abs(t - x) < 2) return resolve(e === epoch);
+				facing = t < x ? "L" : "R";
+				play(gait === "run" ? side("run") : side("walk"));
+				move = { target, gait, abort, done: () => resolve(e === epoch) };
+			});
+		}
+		// a jump arc from where the cat is to a point that may move (the page can scroll mid-air);
+		// it always finishes, even when interrupted, so the cat never stops in the air
+		function jump(to: () => Point): Promise<boolean> {
+			const e = epoch;
+			const from = here();
+			const t = to();
+			const rise = Math.max(0, from.fy - t.fy);
+			const dist = Math.hypot(t.sx - from.sx, t.fy - from.fy);
+			return new Promise((resolve) => {
+				air = {
+					from,
+					to,
+					t0: performance.now(),
+					dur: 360 + Math.sqrt(dist) * 17,
+					h: 14 * S + rise * 0.12,
+					done: () => resolve(e === epoch),
+				};
+			});
+		}
 
-		// pet the cat
-		inner.addEventListener("click", () => {
-			cat.classList.add("pet");
-			hop();
-			setTimeout(() => cat.classList.remove("pet"), 950);
-		});
-
-		// main life loop
-		(async () => {
-			while (true) {
-				while (document.hidden) await wait(1000);
-
-				// stroll somewhere on its ground
-				const w = laneWidth();
-				const cw = catWidth();
-				const target = rand(slack, Math.max(slack + 10, w - cw - slack));
-				await walkTo(target);
-
-				// then do whatever a jolly cat does
-				const roll = Math.random();
-				if (roll < 0.38) {
-					await sit(rand(3000, 7000));
-				} else if (roll < 0.58) {
-					await playWithBall();
-				} else if (roll < 0.72) {
-					// zoomies: a few hops in place, then off again
-					await sit(500);
-					const hops = 2 + Math.floor(Math.random() * 2);
-					for (let i = 0; i < hops; i++) await hop();
-				} else if (roll < 0.88) {
-					// walk a bit more before settling
-					const t2 = rand(slack, Math.max(slack + 10, w - cw - slack));
-					await walkTo(t2);
-					await sit(rand(2000, 4000));
+		// --- one loop draws the frame and moves the cat, so the feet and the ground stay in step
+		let last = performance.now();
+		function render(now: number) {
+			const dt = Math.min(0.05, (now - last) / 1000);
+			last = now;
+			if (move) {
+				const t = clamp(move.target());
+				const d = t - x;
+				const step = (move.gait === "run" ? RUN_SPEED : WALK_SPEED) * dt;
+				if (Math.abs(d) <= step + 0.5 || move.abort?.()) {
+					if (Math.abs(d) <= step + 0.5) x = t;
+					const done = move.done;
+					move = null;
+					done();
 				} else {
-					await sleep(rand(6000, 11000));
+					const dir: Dir = d < 0 ? "L" : "R";
+					if (dir !== facing) {
+						facing = dir;
+						play(move.gait === "run" ? side("run") : side("walk"));
+					}
+					x += Math.sign(d) * step;
 				}
 			}
-		})();
-	})();
+			let p = here();
+			if (air) {
+				const t = Math.min(1, (now - air.t0) / air.dur);
+				const to = air.to();
+				p = {
+					sx: lerp(air.from.sx, to.sx, t),
+					fy: lerp(air.from.fy, to.fy, t) - air.h * 4 * t * (1 - t),
+				};
+				if (t >= 1) {
+					const done = air.done;
+					air = null;
+					done();
+				}
+			}
+			const frames = anim.frames ?? 1;
+			let i = Math.floor(((now - animT0) / 1000) * (anim.fps ?? 1));
+			if (animCycles && i >= frames * animCycles) {
+				i = frames - 1;
+				const done = animDone;
+				animDone = null;
+				done?.();
+			} else i %= frames;
+			sprite.style.backgroundPosition = `${-((anim.col ?? 0) + i) * CELL}px ${-anim.row * CELL}px`;
+			const dpr = window.devicePixelRatio || 1;
+			const snap = (v: number) => Math.round(v * dpr) / dpr;
+			root.style.transform = `translate3d(${snap(p.sx)}px, ${snap(p.fy - FEET + (anim.dy ?? 0) * S)}px, 0)`;
+		}
+		function loop(now: number) {
+			render(now);
+			requestAnimationFrame(loop);
+		}
+
+		// --- what the cat does on its own (on the floor or on a perch: moves stay inside the surface)
+		async function wander() {
+			const [lo, hi] = bounds();
+			const minStep = Math.min(140, (hi - lo) / 3);
+			let t = rand(lo, hi);
+			if (Math.abs(t - x) < minStep) t = clamp(x + (x > (lo + hi) / 2 ? -1 : 1) * rand(minStep, minStep + 200));
+			const gait: Gait = !surface && Math.random() < 0.1 && Math.abs(t - x) > 400 ? "run" : "walk";
+			if (!(await moveTo(() => t, gait))) return false;
+			play(side("stand"));
+			return delay(rand(350, 900));
+		}
+		async function sitAndWag() {
+			play(side("sit"));
+			if (!(await delay(rand(600, 1400)))) return false;
+			play(side("tailSit"));
+			return delay(rand(2500, 6500));
+		}
+		async function groom() {
+			play(A.sitF);
+			if (!(await delay(500))) return false;
+			if (!(await playOnce(A.lickSit, 2 + Math.floor(Math.random() * 2)))) return false;
+			play(A.sitF);
+			return delay(rand(800, 1600));
+		}
+		async function scratch() {
+			play(side("sit"));
+			if (!(await delay(400))) return false;
+			if (!(await playOnce(side("scratch"), 2))) return false;
+			play(side("sit"));
+			return delay(rand(600, 1200));
+		}
+		async function lookAround() {
+			play(side("tailStand"));
+			if (!(await delay(rand(1200, 2400)))) return false;
+			facing = facing === "L" ? "R" : "L";
+			play(side("tailStand"));
+			return delay(rand(1000, 2000));
+		}
+		async function sleep(ms: number) {
+			asleep = true;
+			play(side("sleepLoaf"));
+			if (!(await delay(rand(3000, 5000)))) return false;
+			play(Math.random() < 0.5 ? side("sleepCurl") : side("sleepCurl2"));
+			if (!(await delay(ms))) return false;
+			play(side("sleepLoaf"));
+			if (!(await delay(1500))) return false;
+			asleep = false;
+			awakeSince = performance.now();
+			play(side("tailLie"));
+			if (!(await delay(rand(1500, 2500)))) return false;
+			play(side("sit"));
+			return delay(800);
+		}
+		async function nap(sleepMs = rand(20000, 45000)) {
+			play(A.sitF);
+			if (!(await delay(600))) return false;
+			if (!(await playOnce(A.yawn))) return false;
+			play(A.sitF);
+			if (!(await delay(500))) return false;
+			play(side("lie"));
+			if (!(await delay(1600))) return false;
+			return sleep(sleepMs);
+		}
+
+		// --- perches: jump up onto an element, spend a short while there, jump back down.
+		// Visits are kept short and spaced out so the cat spends most of its time on the ground.
+		const PERCH_STAY: [number, number] = [12000, 25000];
+		const PERCH_GAP = 35000; // at least this long on the ground between visits
+		const perches = () => [...document.querySelectorAll<HTMLElement>("[data-cat-perch]")];
+		function perchUsable(p: HTMLElement) {
+			const r = p.getBoundingClientRect();
+			// room above it for the cat, and the floor clearly below it
+			return r.width > 60 * S && r.top > 40 * S && r.top < window.innerHeight - 140;
+		}
+		function perchOnScreen(p: HTMLElement) {
+			const r = p.getBoundingClientRect();
+			return r.top > 0 && r.top < window.innerHeight;
+		}
+		let lastPerch = -PERCH_GAP;
+		let perchUntil = 0; // when the current visit ends, however often it is interrupted
+		// the floor spot (cell left) from which the cat jumps onto a perch, beside its left or right end
+		function launchX(p: HTMLElement, fromLeft: boolean) {
+			const pr = p.getBoundingClientRect();
+			return (fromLeft ? pr.left - 34 * S : pr.right + 34 * S) - MID;
+		}
+		async function visitPerch(p: HTMLElement, stay = PERCH_STAY, sizeUp: [number, number] = [500, 1100]) {
+			lastPerch = performance.now();
+			const r = p.getBoundingClientRect();
+			const fromLeft = center() < r.left + r.width / 2;
+			// walk to just beside it, then size it up
+			const launch = () => launchX(p, fromLeft);
+			if (!(await moveTo(launch, "walk"))) return false;
+			facing = fromLeft ? "R" : "L";
+			play(side("stand"));
+			if (!(await delay(rand(...sizeUp)))) return false;
+			if (!perchUsable(p)) return false;
+			if (!(await playOnce(side("jumpCrouch")))) return false;
+			play(side("jumpAir"));
+			const w = p.getBoundingClientRect().width;
+			const landX = fromLeft ? 4 * S - BODY_L : w - 4 * S - BODY_R;
+			const ok = await jump(() => {
+				const pr = p.getBoundingClientRect();
+				return { sx: pr.left + landX, fy: pr.top };
+			});
+			surface = p;
+			x = clamp(landX);
+			perchUntil = performance.now() + rand(...stay);
+			if (!(await playOnce(side("jumpLand"))) || !ok) return false;
+			return perchLife(p);
+		}
+		async function perchLife(p: HTMLElement) {
+			let hiddenSince = 0;
+			while (performance.now() < perchUntil) {
+				if (!perchOnScreen(p)) {
+					hiddenSince ||= performance.now();
+					if (performance.now() - hiddenSince > 4000) return backToFloor();
+					if (!(await delay(500))) return false;
+					continue;
+				}
+				hiddenSince = 0;
+				const r = Math.random();
+				// only a short doze up here, and only when there's time for one
+				const left = perchUntil - performance.now();
+				const napChance = left > 15000 && (performance.now() - awakeSince) / 1000 > 45 ? 0.1 : 0;
+				let ok: boolean;
+				if (r < napChance) ok = await nap(rand(6000, 10000));
+				else if (r < napChance + 0.35) ok = await sitAndWag();
+				else if (r < napChance + 0.6) ok = (await wander()) && (await sitAndWag());
+				else if (r < napChance + 0.8) ok = await groom();
+				else ok = await lookAround();
+				if (!ok) return false;
+			}
+			return perchOnScreen(p) ? jumpDown() : backToFloor();
+		}
+		async function jumpDown() {
+			const [lo, hi] = bounds();
+			facing = x < (lo + hi) / 2 ? "L" : "R";
+			if (!(await moveTo(() => (facing === "L" ? lo : hi), "walk"))) return false;
+			if (!(await playOnce(side("jumpCrouch")))) return false;
+			play(side("jumpAir"));
+			const out = here().sx + (facing === "L" ? -40 * S : 40 * S);
+			const landX = Math.min(window.innerWidth - 12 - BODY_R, Math.max(12 - BODY_L, out));
+			const ok = await jump(() => ({ sx: landX, fy: floorY() }));
+			surface = null;
+			x = landX;
+			lastPerch = performance.now();
+			if (!(await playOnce(side("jumpLand"))) || !ok) return false;
+			play(side("stand"));
+			return delay(rand(300, 700));
+		}
+		// the perch scrolled away with the cat on it: it wanders back in from the side
+		async function backToFloor() {
+			surface = null;
+			lastPerch = performance.now();
+			const fromLeft = Math.random() < 0.5;
+			x = fromLeft ? -CELL : window.innerWidth;
+			return moveTo(() => rand(60, window.innerWidth - 60 - CELL), "walk");
+		}
+		// the opening hook on a page with a perch on screen (the photo): the cat sits on the ground for
+		// a few seconds, walks over and jumps up, stays a few seconds, then hops down and is free
+		async function welcome(p: HTMLElement) {
+			play(side("sit"));
+			if (!(await delay(rand(1300, 1600)))) return;
+			play(side("tailSit"));
+			if (!(await delay(rand(500, 700)))) return;
+			if (!(await visitPerch(p, [5000, 7000], [300, 450]))) return;
+		}
+
+		let busy = false;
+		async function life() {
+			for (;;) {
+				while (busy || document.hidden) await delay(400);
+				if (surface) {
+					// a perch visit that was interrupted (by a pat or a swipe) carries on up there
+					await perchLife(surface);
+					continue;
+				}
+				const awakeFor = (performance.now() - awakeSince) / 1000;
+				const napChance = awakeFor > 75 ? 0.3 : 0.03;
+				const perch =
+					performance.now() - lastPerch > PERCH_GAP ? perches().find(perchUsable) : undefined;
+				const r = Math.random();
+				if (perch && r < 0.25) await visitPerch(perch);
+				else if (r < napChance) await nap();
+				else if (r < napChance + 0.4) (await wander()) && (await sitAndWag());
+				else if (r < napChance + 0.58) await sitAndWag();
+				else if (r < napChance + 0.72) await groom();
+				else if (r < napChance + 0.8) await scratch();
+				else await lookAround();
+			}
+		}
+
+		// --- what the visitor can do with it
+		let interaction = 0;
+		async function interact(fn: () => Promise<unknown>) {
+			const mine = ++interaction;
+			busy = true;
+			interrupt();
+			await fn();
+			if (mine === interaction) busy = false;
+		}
+
+		let px = -1;
+		let py = -1;
+		let lastMove = 0;
+		let lastChase = 0;
+		const recent = () => performance.now() - lastMove < 2500;
+		const cursorLow = () => py > window.innerHeight - 320 && recent();
+
+		async function chase() {
+			facing = px < center() ? "L" : "R";
+			play(side("tailStand")); // it notices first
+			if (!(await delay(180))) return;
+			const started = performance.now();
+			while (cursorLow() && performance.now() - started < 12000) {
+				const gait: Gait = Math.abs(px - center()) > 160 ? "run" : "walk";
+				const reach = () => px - MID - (px >= center() ? 18 * S : -18 * S);
+				const arrived = await moveTo(reach, gait, () => !cursorLow() || (gait === "walk" && Math.abs(px - center()) > 220));
+				if (!arrived) return;
+				if (!cursorLow()) break;
+				if (Math.abs(px - center()) > 40 * S) continue;
+				facing = px < center() ? "L" : "R";
+				if (!(await playOnce(side("swipe")))) return;
+				play(side("stand"));
+				if (!(await delay(250))) return;
+			}
+			play(side("sit"));
+			if (!(await delay(400))) return;
+			play(side("tailSit"));
+			await delay(rand(1500, 2500));
+		}
+		// up on a perch it can't run after the cursor, but it swats at it when it comes close
+		async function perchSwipe() {
+			facing = px < center() ? "L" : "R";
+			play(side("stand"));
+			if (!(await delay(120))) return;
+			if (!(await playOnce(side("swipe")))) return;
+			play(side("sit"));
+			await delay(rand(800, 1400));
+		}
+
+		async function petted() {
+			if (asleep) {
+				asleep = false;
+				awakeSince = performance.now();
+				play(side("sleepLoaf"));
+				if (!(await delay(500))) return;
+				play(side("lie"));
+				if (!(await delay(700))) return;
+			}
+			const r = Math.random();
+			if (r < 0.5) {
+				play(A.sitF);
+				if (!(await delay(250))) return;
+				if (!(await playOnce(A.meowSit, 2))) return;
+				play(A.sitF);
+				await delay(1500);
+			} else if (r < 0.8) {
+				if (!(await playOnce(side("jump")))) return;
+				play(side("stand"));
+				await delay(800);
+			} else {
+				if (!(await playOnce(A.hind, 2))) return;
+				play(A.sitF);
+				await delay(1200);
+			}
+		}
+
+		// --- dark mode: the same cat as a black silhouette, only its eyes showing. The night sheet is
+		// drawn once from the day sheet: every pixel goes near-black except the eyes' light glints.
+		let nightUrl: string | null = null;
+		function makeNightSheet(img: HTMLImageElement) {
+			const c = document.createElement("canvas");
+			c.width = img.naturalWidth;
+			c.height = img.naturalHeight;
+			const g = c.getContext("2d", { willReadFrequently: true });
+			if (!g) return null;
+			g.drawImage(img, 0, 0);
+			const d = g.getImageData(0, 0, c.width, c.height);
+			const p = d.data;
+			const eyes: number[] = [];
+			const isOutline = (i: number) => p[i + 3] && p[i] === 0x12 && p[i + 1] === 0x0e && p[i + 2] === 0x14;
+			const row = c.width * 4;
+			for (let i = 0; i < p.length; i += 4) {
+				if (p[i + 3] && p[i] === 0xd3 && p[i + 1] === 0xdf && p[i + 2] === 0xe1) {
+					// an eye is its light glint plus the dark pupil pixels around it: light them all
+					eyes.push(i);
+					for (const n of [i - 4, i + 4, i + row]) if (isOutline(n)) eyes.push(n);
+				}
+			}
+			for (let i = 0; i < p.length; i += 4) {
+				if (p[i + 3]) {
+					p[i] = 10;
+					p[i + 1] = 9;
+					p[i + 2] = 11;
+				}
+			}
+			for (const i of eyes) {
+				p[i] = 0xf4;
+				p[i + 1] = 0xe2;
+				p[i + 2] = 0x7a;
+				p[i + 3] = 255;
+			}
+			g.putImageData(d, 0, 0);
+			return c.toDataURL("image/png");
+		}
+		function applyTheme(img: HTMLImageElement) {
+			const dark = document.documentElement.getAttribute("data-theme") === "dark";
+			if (dark && !nightUrl) nightUrl = makeNightSheet(img);
+			sprite.style.backgroundImage = dark && nightUrl ? `url("${nightUrl}")` : "";
+		}
+
+		// --- carry the cat across page loads so it doesn't teleport
+		const KEY = "site-cat";
+		function save() {
+			try {
+				const onFloor = !surface && !air;
+				sessionStorage.setItem(
+					KEY,
+					JSON.stringify({ x: here().sx, facing, asleep: asleep && onFloor, t: Date.now() }),
+				);
+			} catch {}
+		}
+		let resumeAsleep = false;
+		try {
+			const saved = JSON.parse(sessionStorage.getItem(KEY) ?? "null");
+			if (saved && Date.now() - saved.t < 30 * 60 * 1000) {
+				x = clamp(saved.x);
+				facing = saved.facing === "L" ? "L" : "R";
+				resumeAsleep = Boolean(saved.asleep);
+			} else x = rand(...bounds());
+		} catch {
+			x = rand(...bounds());
+		}
+
+		const img = new Image();
+		img.onload = () => {
+			applyTheme(img);
+			new MutationObserver(() => applyTheme(img)).observe(document.documentElement, {
+				attributes: true,
+				attributeFilter: ["data-theme"],
+			});
+			// the opening hook: start on the ground just beside the photo, facing it
+			const hookPerch = reduce ? undefined : perches().find(perchUsable);
+			if (hookPerch) {
+				const [lo, hi] = bounds();
+				const r = hookPerch.getBoundingClientRect();
+				// approach from whichever side has room on the floor; the left one when both do
+				const fromLeft = launchX(hookPerch, true) >= lo || launchX(hookPerch, false) > hi;
+				x = clamp(launchX(hookPerch, fromLeft) + (fromLeft ? -1 : 1) * rand(45, 70));
+				facing = x + MID < r.left + r.width / 2 ? "R" : "L";
+				resumeAsleep = false;
+			}
+			root.hidden = false;
+			if (reduce) {
+				// a calm cat: sitting still at the right-hand side
+				x = bounds()[1];
+				play(A.sitL);
+				render(performance.now());
+				return;
+			}
+			play(side("sit"));
+			requestAnimationFrame(loop);
+			addEventListener("pagehide", save);
+			addEventListener("resize", () => (x = clamp(x)), { passive: true });
+			hit.addEventListener("click", () => {
+				if (!air) interact(petted);
+			});
+			if (finePointer) {
+				addEventListener(
+					"pointermove",
+					(ev) => {
+						if (ev.pointerType !== "mouse") return;
+						px = ev.clientX;
+						py = ev.clientY;
+						lastMove = performance.now();
+					},
+					{ passive: true },
+				);
+				setInterval(() => {
+					if (busy || asleep || air || document.hidden || !recent()) return;
+					if (performance.now() - lastChase < 2500) return;
+					if (surface) {
+						const head = here().fy - 20 * S;
+						if (Math.hypot(px - center(), py - head) > 34 * S) return;
+						lastChase = performance.now();
+						interact(perchSwipe);
+						return;
+					}
+					if (!cursorLow() || Math.abs(px - center()) < 70) return;
+					lastChase = performance.now();
+					interact(chase);
+				}, 120);
+			}
+			if (hookPerch) {
+				interact(() => welcome(hookPerch));
+			} else if (resumeAsleep) {
+				play(side("sleepCurl"));
+				interact(() => sleep(rand(8000, 20000)));
+			}
+			life();
+		};
+		img.src = "/cat/black.png";
+	}
 </script>

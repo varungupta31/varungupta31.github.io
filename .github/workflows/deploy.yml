@@ -29,6 +29,9 @@ jobs:
         run: npm ci
       - name: Build
         run: npm run build
+        env:
+          # decrypts the licensed cat sprites (scripts/cat-assets.mjs); without it the site builds without the cat
+          CAT_ASSETS_KEY: ${{ secrets.CAT_ASSETS_KEY }}
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:

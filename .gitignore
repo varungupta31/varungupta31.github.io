@@ -25,3 +25,6 @@ pnpm-debug.log*
 .astro
 # taste-skill inspection artifacts
 .taste-skill/
+
+# licensed cat sprites: decrypted from cat-assets/sprites.enc, never committed in the clear
+public/cat/

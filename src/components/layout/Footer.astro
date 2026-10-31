@@ -4,19 +4,31 @@ import { menuLinks, siteConfig } from "@/site.config";
 const year = new Date().getFullYear();
 ---
 
-<footer
-	class="text-muted mt-auto flex w-full flex-col items-center justify-center gap-y-2 pt-20 pb-4 text-center align-top font-semibold sm:flex-row sm:justify-between sm:text-sm"
->
-	<div class="me-0 sm:me-4">
-		&copy; {siteConfig.author} {year}.
+<footer class="text-muted mt-auto w-full pt-20 pb-4">
+	<figure class="mb-6 text-center text-xs italic opacity-80">
+		<blockquote class="inline">“A smooth sea never made a skilled sailor.”</blockquote>{" "}
+		<figcaption class="inline whitespace-nowrap">— Franklin D. Roosevelt</figcaption>
+	</figure>
+	<div
+		class="flex flex-col items-center justify-center gap-y-2 text-center font-semibold sm:flex-row sm:justify-between sm:text-sm"
+	>
+		<div class="me-0 sm:me-4">
+			&copy; {siteConfig.author} {year}. Cat by
+			<a
+				class="hover:text-global-text hover:underline"
+				href="https://last-tick.itch.io/animated-pixel-cats-64x64"
+				rel="noreferrer"
+				target="_blank">Last tick</a
+			>.
+		</div>
+		<nav aria-label="Footer" class="flex flex-wrap justify-center gap-x-2 sm:gap-x-0">
+			{
+				menuLinks.map((link) => (
+					<a class="hover:text-global-text px-4 py-2 hover:underline sm:py-0" href={link.path}>
+						{link.title}
+					</a>
+				))
+			}
+		</nav>
 	</div>
-	<nav aria-label="Footer" class="flex flex-wrap justify-center gap-x-2 sm:gap-x-0">
-		{
-			menuLinks.map((link) => (
-				<a class="hover:text-global-text px-4 py-2 hover:underline sm:py-0" href={link.path}>
-					{link.title}
-				</a>
-			))
-		}
-	</nav>
 </footer>
