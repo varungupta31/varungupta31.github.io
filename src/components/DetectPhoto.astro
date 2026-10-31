@@ -1,0 +1,208 @@
+---
+// A photo that "runs a detector" when hovered (or tapped): object boxes with labels and confidence
+// scores draw in over it, the way a vision model would see the picture. Boxes are given in percent
+// of the image. The site's cat, when it sits on this photo, is detected too (see Cat.astro).
+interface Box {
+	label: string;
+	score: number;
+	x: number;
+	y: number;
+	w: number;
+	h: number;
+	// where the label sits; boxes touching the top edge put it inside automatically
+	labelAt?: "above" | "inside" | "inside-bottom";
+}
+interface Props {
+	src: string;
+	alt: string;
+	width: number;
+	height: number;
+	boxes: Box[];
+	class?: string;
+	perch?: boolean;
+	// shared with the matching photo on another page, so it morphs across page transitions
+	transitionName?: string;
+}
+const { src, alt, width, height, boxes, class: className, perch = false, transitionName } = Astro.props;
+---
+
+<figure class:list={["detect", className]} data-detect data-motion="photo">
+	<img
+		{src}
+		{alt}
+		{width}
+		{height}
+		data-cat-perch={perch ? "" : undefined}
+		style={transitionName ? `view-transition-name:${transitionName}` : undefined}
+	/>
+	<div class="det-layer" aria-hidden="true">
+		<div class="det-scan"></div>
+		{
+			boxes.map((b, i) => (
+				<div
+					class:list={[
+						"det-box",
+						(b.labelAt === "inside" || (!b.labelAt && b.y < 7)) && "label-inside",
+						b.labelAt === "inside-bottom" && "label-inside-bottom",
+					]}
+					style={`--i:${i};left:${b.x}%;top:${b.y}%;width:${b.w}%;height:${b.h}%`}
+				>
+					<span class="det-label">
+						{b.label} <span class="det-score" data-score={b.score.toFixed(2)}>{b.score.toFixed(2)}</span>
+					</span>
+				</div>
+			))
+		}
+		<span class="det-status" style={`--i:${boxes.length}`}>
+			{boxes.length} objects · <span class="det-ms">21</span> ms
+		</span>
+	</div>
+</figure>
+
+<style>
+	.detect {
+		position: relative;
+		margin: 0;
+		cursor: crosshair;
+	}
+	.detect img {
+		display: block;
+		width: 100%;
+		height: auto;
+		transition: filter 0.4s ease;
+	}
+	.det-layer {
+		position: absolute;
+		inset: 0;
+		pointer-events: none;
+		font-family:
+			ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+	}
+	.det-box {
+		position: absolute;
+		border: 2px solid var(--color-accent);
+		opacity: 0;
+		transform: scale(0.94);
+		transition:
+			opacity 0.2s ease,
+			transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1);
+	}
+	.det-label,
+	.det-status {
+		position: absolute;
+		background: var(--color-accent);
+		color: var(--color-global-bg);
+		font-size: 11px;
+		font-weight: 600;
+		line-height: 1.6;
+		padding: 0 5px;
+		white-space: nowrap;
+	}
+	.det-label {
+		left: -2px;
+		bottom: 100%;
+		z-index: 1;
+	}
+	.label-inside .det-label {
+		bottom: auto;
+		top: 0;
+		left: 0;
+	}
+	.label-inside-bottom .det-label {
+		bottom: 0;
+		left: auto;
+		right: 0;
+	}
+	.det-status {
+		left: 8px;
+		bottom: 8px;
+		opacity: 0;
+		transition: opacity 0.25s ease;
+	}
+	.det-scan {
+		position: absolute;
+		left: 0;
+		right: 0;
+		top: 0;
+		height: 2px;
+		background: var(--color-accent);
+		opacity: 0;
+	}
+
+	.detect:global(.is-detecting) img {
+		filter: saturate(0.75) contrast(1.05);
+	}
+	.detect:global(.is-detecting) .det-scan {
+		animation: det-scan 0.55s cubic-bezier(0.4, 0, 0.2, 1) both;
+	}
+	.detect:global(.is-detecting) .det-box {
+		opacity: 1;
+		transform: none;
+		transition-delay: calc(0.3s + var(--i) * 0.08s);
+	}
+	.detect:global(.is-detecting) .det-status {
+		opacity: 1;
+		transition-delay: calc(0.3s + var(--i) * 0.08s);
+	}
+	@keyframes det-scan {
+		0% {
+			top: 0;
+			opacity: 1;
+		}
+		85% {
+			opacity: 1;
+		}
+		100% {
+			top: 100%;
+			opacity: 0;
+		}
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.det-box,
+		.det-status,
+		.detect img {
+			transition: none !important;
+		}
+		.detect:global(.is-detecting) .det-scan {
+			animation: none;
+		}
+	}
+</style>
+
+<script>
+	const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+	// confidence scores count up as their boxes land, like a model settling
+	function countUp(fig: HTMLElement) {
+		const ms = fig.querySelector<HTMLElement>(".det-ms");
+		if (ms) ms.textContent = String(17 + Math.floor(Math.random() * 10));
+		fig.querySelectorAll<HTMLElement>(".det-score").forEach((el, i) => {
+			const target = Number(el.dataset.score);
+			if (reduce) return;
+			const start = performance.now() + 300 + i * 80;
+			const tick = (now: number) => {
+				const t = Math.min(1, Math.max(0, (now - start) / 450));
+				el.textContent = (target * (1 - (1 - t) ** 3)).toFixed(2);
+				if (t < 1 && fig.classList.contains("is-detecting")) requestAnimationFrame(tick);
+				else el.textContent = target.toFixed(2);
+			};
+			el.textContent = "0.00";
+			requestAnimationFrame(tick);
+		});
+	}
+
+	for (const fig of document.querySelectorAll<HTMLElement>("[data-detect]")) {
+		const on = () => {
+			if (fig.classList.contains("is-detecting")) return;
+			fig.classList.add("is-detecting");
+			countUp(fig);
+		};
+		const off = () => fig.classList.remove("is-detecting");
+		fig.addEventListener("pointerenter", (e) => e.pointerType === "mouse" && on());
+		fig.addEventListener("pointerleave", (e) => e.pointerType === "mouse" && off());
+		// touch: a tap toggles the detections
+		fig.addEventListener("pointerup", (e) => {
+			if (e.pointerType !== "mouse") fig.classList.contains("is-detecting") ? off() : on();
+		});
+	}
+</script>

@@ -167,3 +167,52 @@ html.js [data-motion].motion-in {
 		transition: none !important;
 	}
 }
+
+/* page transitions (cross-document view transitions): the header stays put, the photo morphs
+   between pages, and the rest of the page lifts out and settles in */
+@media (min-width: 640px) {
+	/* not on phones, where naming it would put the open mobile menu under the page */
+	#main-header {
+		view-transition-name: site-header;
+	}
+}
+::view-transition-old(root) {
+	animation: 160ms ease-in both vt-out;
+}
+::view-transition-new(root) {
+	animation: 360ms cubic-bezier(0.2, 0.7, 0.2, 1) 80ms both vt-in;
+}
+::view-transition-group(hero-photo) {
+	animation-duration: 480ms;
+	animation-timing-function: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+::view-transition-old(hero-photo),
+::view-transition-new(hero-photo) {
+	height: 100%;
+	object-fit: cover;
+}
+@keyframes vt-out {
+	to {
+		opacity: 0;
+		transform: translateY(-6px);
+	}
+}
+@keyframes vt-in {
+	from {
+		opacity: 0;
+		transform: translateY(10px);
+	}
+}
+/* arriving through a page transition: the transition is the entrance, so skip the per-element one */
+html.vt-arrive [data-motion] {
+	opacity: 1 !important;
+	transform: none !important;
+	transition: none !important;
+}
+@media (prefers-reduced-motion: reduce) {
+	::view-transition-group(*),
+	::view-transition-old(*),
+	::view-transition-new(*) {
+		animation: none !important;
+	}
+}

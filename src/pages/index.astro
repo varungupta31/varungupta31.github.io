@@ -1,8 +1,8 @@
 ---
-import { type CollectionEntry, getCollection } from "astro:content";
+import type { CollectionEntry } from "astro:content";
 import { Icon } from "astro-icon/components";
 import PostPreview from "@/components/blog/PostPreview.astro";
-import Note from "@/components/note/Note.astro";
+import DetectPhoto from "@/components/DetectPhoto.astro";
 import { getAllPosts } from "@/data/post";
 import PageLayout from "@/layouts/Base.astro";
 import { collectionDateSort } from "@/utils/date";
@@ -20,13 +20,6 @@ const pinnedPosts = allPostsByDate
 	.filter((p) => p.data.pinned)
 	.take(MAX_PINNED_POSTS)
 	.toArray();
-
-// Notes, set to a max of 5
-const MAX_NOTES = 5;
-const allNotes = await getCollection("note");
-const latestNotes = allNotes
-	.sort(collectionDateSort)
-	.slice(0, MAX_NOTES) as CollectionEntry<"note">[];
 
 const contactLinks: {
 	friendlyName: string;
@@ -73,14 +66,22 @@ const contactLinks: {
 				computers how to watch and make sense of the world!
 			</p>
 		</div>
-		<img
-			data-motion="photo"
-			data-cat-perch
+		<DetectPhoto
 			src="/avatar.jpg"
 			alt="Varun Gupta"
+			width={512}
+			height={512}
+			perch
+			transitionName="hero-photo"
 			class="w-56 justify-self-center sm:w-80 lg:w-96"
-			width="512"
-			height="512"
+			boxes={[
+				{ label: "person", score: 0.98, x: 1, y: 3, w: 80, h: 96 },
+				{ label: "glasses", score: 0.94, x: 11, y: 19, w: 45, h: 19 },
+				{ label: "backpack", score: 0.81, x: 53, y: 45, w: 21, h: 36 },
+				{ label: "hand", score: 0.88, x: 72, y: 66, w: 10, h: 17 },
+				{ label: "text: “Portofino Lover”", score: 0.86, x: 34, y: 76, w: 37, h: 22 },
+				{ label: "bench", score: 0.77, x: 72, y: 70, w: 27, h: 29, labelAt: "inside-bottom" },
+			]}
 		/>
 	</section>
 	<section class="mt-20">
@@ -137,22 +138,6 @@ const contactLinks: {
 							</li>
 						))
 					}
-				</ul>
-			</section>
-		)
-	}
-	{
-		latestNotes.length > 0 && (
-			<section class="mt-16">
-				<h2 class="title text-accent mb-6 text-xl" data-motion>
-					<a href="/notes/">News</a>
-				</h2>
-				<ul class="space-y-6" role="list">
-					{latestNotes.map((note) => (
-						<li data-motion>
-							<Note note={note} as="h3" isPreview />
-						</li>
-					))}
 				</ul>
 			</section>
 		)

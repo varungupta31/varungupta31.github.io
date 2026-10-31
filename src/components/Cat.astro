@@ -9,6 +9,7 @@
 
 <div id="site-cat" class="site-cat" aria-hidden="true" hidden>
 	<div class="cat-sprite"></div>
+	<div class="cat-box"><span>cat <span class="cat-score">0.99</span></span></div>
 	<div class="cat-hit"></div>
 </div>
 
@@ -32,6 +33,36 @@
 		position: absolute;
 		pointer-events: auto;
 		cursor: pointer;
+	}
+	/* up on a photo that is "running detection", the cat gets a box of its own */
+	.cat-box {
+		position: absolute;
+		border: 2px solid var(--color-accent);
+		opacity: 0;
+		transform: scale(0.94);
+		transition:
+			opacity 0.2s ease,
+			transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1);
+	}
+	.cat-box > span {
+		position: absolute;
+		left: -2px;
+		bottom: 100%;
+		padding: 0 5px;
+		background: var(--color-accent);
+		color: var(--color-global-bg);
+		font:
+			600 11px/1.6 ui-monospace,
+			SFMono-Regular,
+			Menlo,
+			Consolas,
+			monospace;
+		white-space: nowrap;
+	}
+	.site-cat.detected .cat-box {
+		opacity: 1;
+		transform: none;
+		transition-delay: 0.35s;
 	}
 </style>
 
@@ -112,6 +143,9 @@
 		root.style.width = root.style.height = `${CELL}px`;
 		sprite.style.backgroundSize = `${SHEET_W * S}px ${SHEET_H * S}px`;
 		Object.assign(hit.style, { left: `${14 * S}px`, top: `${17 * S}px`, width: `${36 * S}px`, height: `${31 * S}px` });
+		const box = root.querySelector<HTMLElement>(".cat-box")!;
+		Object.assign(box.style, { left: `${10 * S}px`, top: `${13 * S}px`, width: `${46 * S}px`, height: `${36 * S}px` });
+		let detected = false;
 
 		// --- where the cat is: on the floor (the window's bottom edge) or on top of a perch element.
 		// x is the cell's left edge relative to that surface.
@@ -268,6 +302,12 @@
 			const dpr = window.devicePixelRatio || 1;
 			const snap = (v: number) => Math.round(v * dpr) / dpr;
 			root.style.transform = `translate3d(${snap(p.sx)}px, ${snap(p.fy - FEET + (anim.dy ?? 0) * S)}px, 0)`;
+			// sitting on a photo that is running detection: the cat is detected too
+			const isDetected = !!surface && !air && !!surface.closest("[data-detect]")?.classList.contains("is-detecting");
+			if (isDetected !== detected) {
+				detected = isDetected;
+				root.classList.toggle("detected", detected);
+			}
 		}
 		function loop(now: number) {
 			render(now);
@@ -452,12 +492,14 @@
 					continue;
 				}
 				const awakeFor = (performance.now() - awakeSince) / 1000;
-				const napChance = awakeFor > 75 ? 0.3 : 0.03;
+				// late at night (the visitor's local time) it gets sleepy sooner and sleeps longer
+				const night = isNight();
+				const napChance = awakeFor > (night ? 35 : 75) ? (night ? 0.45 : 0.3) : 0.03;
 				const perch =
 					performance.now() - lastPerch > PERCH_GAP ? perches().find(perchUsable) : undefined;
 				const r = Math.random();
 				if (perch && r < 0.25) await visitPerch(perch);
-				else if (r < napChance) await nap();
+				else if (r < napChance) await nap(night ? rand(40000, 70000) : undefined);
 				else if (r < napChance + 0.4) (await wander()) && (await sitAndWag());
 				else if (r < napChance + 0.58) await sitAndWag();
 				else if (r < napChance + 0.72) await groom();
@@ -586,6 +628,42 @@
 			sprite.style.backgroundImage = dark && nightUrl ? `url("${nightUrl}")` : "";
 		}
 
+		// --- the theme toggle is a light switch: lights out sends it to sleep, lights on wakes it
+		const isNight = () => {
+			const h = new Date().getHours();
+			return h >= 23 || h < 6;
+		};
+		async function lightsOut() {
+			play(A.sitF); // it notices the room go dark
+			if (!(await delay(450))) return;
+			if (!(await playOnce(A.yawn))) return;
+			play(side("lie"));
+			if (!(await delay(900))) return;
+			await sleep(rand(15000, 30000));
+		}
+		async function lightsOn() {
+			asleep = false;
+			awakeSince = performance.now();
+			play(side("sleepLoaf"));
+			if (!(await delay(350))) return;
+			play(side("lie"));
+			if (!(await delay(450))) return;
+			play(A.sitF);
+			if (!(await delay(250))) return;
+			if (!(await playOnce(A.meowSit, 2))) return;
+			play(A.sitF);
+			await delay(900);
+		}
+		let theme = document.documentElement.getAttribute("data-theme");
+		function onThemeChange() {
+			const now = document.documentElement.getAttribute("data-theme");
+			if (now === theme) return;
+			theme = now;
+			if (reduce || air || root.hidden) return;
+			if (now === "dark" && !asleep) interact(lightsOut);
+			else if (now !== "dark" && asleep) interact(lightsOn);
+		}
+
 		// --- carry the cat across page loads so it doesn't teleport
 		const KEY = "site-cat";
 		function save() {
@@ -612,13 +690,24 @@
 		const img = new Image();
 		img.onload = () => {
 			applyTheme(img);
-			new MutationObserver(() => applyTheme(img)).observe(document.documentElement, {
+			new MutationObserver(() => {
+				applyTheme(img);
+				onThemeChange();
+			}).observe(document.documentElement, {
 				attributes: true,
 				attributeFilter: ["data-theme"],
 			});
-			// the opening hook: start on the ground just beside the photo, facing it
-			const hookPerch = reduce ? undefined : perches().find(perchUsable);
+			// the opening hook, once per visit: start on the ground just beside the photo, facing it
+			const HOOK_KEY = "site-cat-hooked";
+			let hooked = false;
+			try {
+				hooked = sessionStorage.getItem(HOOK_KEY) === "1";
+			} catch {}
+			const hookPerch = reduce || hooked ? undefined : perches().find(perchUsable);
 			if (hookPerch) {
+				try {
+					sessionStorage.setItem(HOOK_KEY, "1");
+				} catch {}
 				const [lo, hi] = bounds();
 				const r = hookPerch.getBoundingClientRect();
 				// approach from whichever side has room on the floor; the left one when both do
