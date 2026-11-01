@@ -131,6 +131,25 @@
 	.title {
 		@apply text-accent-2 text-2xl font-semibold;
 	}
+
+	/* easter egg: the Microsoft logo's four colours fade into the text on hover */
+	.ms-colors {
+		background-image: linear-gradient(
+			90deg,
+			#f25022 0 25%,
+			#7fba00 25% 50%,
+			#00a4ef 50% 75%,
+			#ffb900 75%
+		);
+		background-clip: text;
+		transition: color 0.35s ease;
+
+		&:hover,
+		&:focus-visible {
+			color: transparent;
+			text-decoration-color: #00a4ef;
+		}
+	}
 }
 
 @utility prose {

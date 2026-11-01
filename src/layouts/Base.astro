@@ -41,7 +41,7 @@ const {
 		<script>
 			// Entrance motion. Adds .js first so content never hides without JS.
 			document.documentElement.classList.add("js");
-			const items = [...document.querySelectorAll("[data-motion]")];
+			const items = [...document.querySelectorAll<HTMLElement>("[data-motion]")];
 			items.forEach((el, i) => {
 				el.style.transitionDelay = `${(i % 6) * 70}ms`;
 			});

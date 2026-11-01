@@ -157,7 +157,12 @@
 		let animT0 = performance.now();
 		let animCycles = 0; // 0 loops forever; otherwise hold the last frame after this many cycles
 		let animDone: (() => void) | null = null;
-		let move: { target: () => number; gait: Gait; abort?: () => boolean; done: () => void } | null = null;
+		let move: {
+			target: () => number;
+			gait: Gait;
+			abort?: (() => boolean) | undefined;
+			done: () => void;
+		} | null = null;
 		let asleep = false;
 		let awakeSince = performance.now();
 

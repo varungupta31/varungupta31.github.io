@@ -37,10 +37,6 @@ export const menuLinks: { path: string; title: string }[] = [
 		path: "/",
 		title: "Home",
 	},
-	{
-		path: "/about/",
-		title: "About",
-	},
 	// News (/notes/) is hidden for now; the pages still build, add it back here to show it again
 	{
 		path: "/publications/",

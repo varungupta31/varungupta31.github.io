@@ -58,29 +58,74 @@ const contactLinks: {
 	<section class="grid items-center gap-10 sm:grid-cols-[1fr_auto]">
 		<div data-motion>
 			<h1 class="title mb-6 text-5xl sm:text-7xl">Varun Gupta</h1>
-			<p class="max-w-prose text-lg">
-				Master’s student in Computer Science at
-				<a class="cactus-link inline-block" href="https://www.iiit.ac.in/" rel="noreferrer" target="_blank"
-					>IIIT Hyderabad</a
-				>, working on visual understanding and representation learning — teaching
-				computers how to watch and make sense of the world!
-			</p>
+			<div class="max-w-prose space-y-4 text-lg">
+				<p>
+					I’m a research intern at{" "}
+					<a
+						class="cactus-link ms-colors inline-block"
+						href="https://www.microsoft.com/en-us/research/lab/microsoft-research-india/"
+						rel="noreferrer"
+						target="_blank">Microsoft Research</a
+					>, working with the Copilot team on agentic memory (helping AI agents remember things),
+					advised by{" "}
+					<a
+						class="cactus-link inline-block"
+						href="https://scholar.google.com/citations?user=QolzyE4AAAAJ&hl=en"
+						rel="noreferrer"
+						target="_blank">Akshay Nambi</a
+					>.
+				</p>
+				<p>
+					Before this, I did my Master’s at CVIT,{" "}
+					<a class="cactus-link inline-block" href="https://www.iiit.ac.in/" rel="noreferrer" target="_blank"
+						>IIIT Hyderabad</a
+					> with{" "}
+					<a class="cactus-link inline-block" href="https://makarandtapaswi.github.io/" rel="noreferrer" target="_blank"
+						>Makarand Tapaswi</a
+					>. I worked closely with{" "}
+					<a
+						class="cactus-link inline-block"
+						href="https://scholar.google.com/citations?user=U9dH-DoAAAAJ&hl=en"
+						rel="noreferrer"
+						target="_blank">Prof. C.V. Jawahar</a
+					> on the Indian Driving Dataset, where the traffic is wonderfully chaotic, and collaborate often
+					with{" "}
+					<a class="cactus-link inline-block" href="https://vineet-gandhi.github.io/" rel="noreferrer" target="_blank"
+						>Prof. Vineet Gandhi</a
+					> and{" "}
+					<a
+						class="cactus-link inline-block"
+						href="https://scholar.google.com/citations?user=TmWYBeEAAAAJ"
+						rel="noreferrer"
+						target="_blank">Subhashini Venugopalan</a
+					>.
+				</p>
+				<p>
+					Lately I’ve been drawn to making agentic AI safe, reliable, and consistent. In parallel, I
+					continue to work on giving models better vision by steering and interpreting foundation models,
+					and building models that truly understand motion.
+				</p>
+				<p>
+					Off the clock, you’ll find me cooking, biking around, vibing to music, taking photos, or lifting
+					some weights!
+				</p>
+			</div>
 		</div>
 		<DetectPhoto
-			src="/avatar.jpg"
+			src="/img/prof_pic.jpg"
 			alt="Varun Gupta"
-			width={512}
-			height={512}
+			width={619}
+			height={675}
 			perch
 			transitionName="hero-photo"
 			class="w-56 justify-self-center sm:w-80 lg:w-96"
 			boxes={[
-				{ label: "person", score: 0.98, x: 1, y: 3, w: 80, h: 96 },
-				{ label: "glasses", score: 0.94, x: 11, y: 19, w: 45, h: 19 },
-				{ label: "backpack", score: 0.81, x: 53, y: 45, w: 21, h: 36 },
-				{ label: "hand", score: 0.88, x: 72, y: 66, w: 10, h: 17 },
-				{ label: "text: “Portofino Lover”", score: 0.86, x: 34, y: 76, w: 37, h: 22 },
-				{ label: "bench", score: 0.77, x: 72, y: 70, w: 27, h: 29, labelAt: "inside-bottom" },
+				{ label: "person", score: 0.98, x: 0, y: 3, w: 97, h: 97 },
+				{ label: "glasses", score: 0.94, x: 21, y: 19, w: 49, h: 19 },
+				{ label: "backpack", score: 0.81, x: 67, y: 45, w: 23, h: 36 },
+				{ label: "hand", score: 0.88, x: 88, y: 66, w: 11, h: 17 },
+				{ label: "text: “Portofino Lover”", score: 0.86, x: 46, y: 76, w: 40, h: 22 },
+				{ label: "bench", score: 0.77, x: 88, y: 70, w: 12, h: 29, labelAt: "inside-bottom" },
 			]}
 		/>
 	</section>
