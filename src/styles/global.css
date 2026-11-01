@@ -98,9 +98,14 @@
 		scroll-margin-block: 5ex;
 	}
 
-	/* Bump the whole scale up: the page reads thin at the 16px default */
+	/* 16px on phones; 13px from tablets up, where 16px+ read as zoomed in */
 	html {
-		font-size: 112.5%;
+		font-size: 100%;
+	}
+	@media (min-width: 48rem) {
+		html {
+			font-size: 81.25%;
+		}
 	}
 
 	@view-transition {
@@ -132,8 +137,10 @@
 		@apply text-accent-2 text-2xl font-semibold;
 	}
 
-	/* easter egg: the Microsoft logo's four colours fade into the text on hover */
-	.ms-colors {
+	/* easter egg: the Microsoft logo's four colours fade into the text on hover. The gradient only
+	   exists while hovered, otherwise it bleeds through the anti-aliased glyph edges at rest. */
+	.ms-colors:hover,
+	.ms-colors:focus-visible {
 		background-image: linear-gradient(
 			90deg,
 			#f25022 0 25%,
@@ -142,13 +149,9 @@
 			#ffb900 75%
 		);
 		background-clip: text;
+		color: transparent;
+		text-decoration-color: #00a4ef;
 		transition: color 0.35s ease;
-
-		&:hover,
-		&:focus-visible {
-			color: transparent;
-			text-decoration-color: #00a4ef;
-		}
 	}
 }
 

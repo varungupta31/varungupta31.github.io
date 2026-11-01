@@ -131,8 +131,8 @@
 		const rand = (lo: number, hi: number) => lo + Math.random() * (hi - lo);
 		const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
-		// sprite scale: 64px cells drawn at 2.5x, or 2x on phones
-		const S = matchMedia("(max-width: 640px)").matches ? 2 : 2.5;
+		// sprite scale: 64px cells drawn at 2x (an integer scale keeps the pixel art crisp)
+		const S = 2;
 		const CELL = 64 * S;
 		const FEET = 48 * S; // the feet rest on row 47 of a cell
 		const BODY_L = 12 * S; // the drawn body spans x 12..54 of a cell
